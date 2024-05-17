@@ -13,7 +13,7 @@ public interface ClientServiceImpl {
 
     Client save(Client client);
 
-    Optional<Client> findById(@NonNull Long id)throws ClientException ;
+    Optional<Client> findById(@NonNull Long id) throws ClientException ;
 
     void deleteById(Long id) throws ClientException;
 

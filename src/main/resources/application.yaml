@@ -8,7 +8,7 @@ flyway:
   locations:
       classpath: 'db/migration/'
   database-name: postgres
-  enabled: false
+  enabled: true
 
 # Data Source Configuration
 datasources:
@@ -17,7 +17,8 @@ datasources:
     driverClassName: org.postgresql.Driver
     username: postgres
     password: 123456
-    dialect: POSTGRES
+    schema-generate: UPDATE
+    dialect: io.micronaut.data.model.query.builder.sql.Dialect.POSTGRES
 
 mongodb:
   uri : mongodb://127.0.0.1:27017/EstudosMicronaut
@@ -27,14 +28,14 @@ redis:
 
 jpa:
   default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        default_schema: public
     packages-to-scan:
       - 'com.phoebus'
     entity-scan:
       packages: 'com.phoebus.entites'
-
-Dialect:
-  hibernate:
-    ddl-auto: update
-    default_schema: public
 
 
