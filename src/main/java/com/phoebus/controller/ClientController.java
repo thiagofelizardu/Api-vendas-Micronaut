@@ -4,13 +4,7 @@ import com.phoebus.entites.Client;
 import com.phoebus.exception.ClientException;
 import com.phoebus.service.ClientService;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Delete;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.PathVariable;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.Status;
+import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 
@@ -46,11 +40,11 @@ public class ClientController {
         return clientService.findById(id);
     }
 
-//    @Put("update/{id}")
-//    @Status(HttpStatus.OK)
-//    public void ClientUpdate(@PathVariable Long id, @Body Client client) throws ClientException {
-//        clientService.updateById(id, client);
-//    }
+    @Put("/{id}")
+    @Status(HttpStatus.OK)
+    public void ClientUpdate(@PathVariable Long id, @Body Client client) throws ClientException {
+        clientService.update(id, client);
+    }
 
     @Delete("delete/{id}")
     @Status(HttpStatus.ACCEPTED)

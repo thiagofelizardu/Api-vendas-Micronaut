@@ -37,6 +37,19 @@ public class ClientService implements ClientServiceImpl {
         return client;
     }
 
+    public Client update(@NonNull Long id ,Client client) throws ClientException{
+        Optional<Client> existingClient = clientRepository.findById(id);
+        if (existingClient.isEmpty()){
+            throw new ClientException("Client Not Found");
+        }
+        Client updateClient = existingClient.get();
+        updateClient.setName(client.getName());
+        updateClient.setCpf(client.getCpf());
+        updateClient.setAge(client.getAge());
+        updateClient.setCity(client.getCity());
+        return clientRepository.save(updateClient);
+    }
+
     public void deleteById(Long id)throws ClientException {
         Optional<Client> client = clientRepository.findById(id);
         if (client.isEmpty()){

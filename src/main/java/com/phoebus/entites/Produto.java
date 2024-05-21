@@ -1,7 +1,8 @@
 package com.phoebus.entites;
 
+import io.micronaut.core.annotation.NonNull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @Entity(name = "produto")
@@ -13,13 +14,13 @@ public class Produto {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "nome")
     private String nome;
 
     @Column(name = "preco")
-    @NotNull
-    private Long preco;
+    @NonNull
+    private double preco;
 
     public Long getId() {
         return id;
@@ -37,11 +38,11 @@ public class Produto {
         this.nome = nome;
     }
 
-    public Long getPreco() {
+    public double getPreco() {
         return preco;
     }
 
-    public void setPreco(Long preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 }

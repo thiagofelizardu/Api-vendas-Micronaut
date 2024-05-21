@@ -17,4 +17,7 @@ public interface LojaServiceImpl {
     Optional<Loja> findById(@NonNull Long id) throws LojaException;
 
     void deletById (Long id) throws LojaException;
+
+    Loja update(@NonNull Long id, Loja loja) throws LojaException;
+
 }

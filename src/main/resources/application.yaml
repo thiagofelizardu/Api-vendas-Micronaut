@@ -33,9 +33,10 @@ jpa:
         hbm2ddl:
           auto: update
         default_schema: public
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
     packages-to-scan:
       - 'com.phoebus'
     entity-scan:
       packages: 'com.phoebus.entites'
-
-

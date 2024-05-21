@@ -15,24 +15,55 @@ public class ProdutoService implements ProdutoServiceImpl {
 
 
     @Inject
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
+
+    public ProdutoService(ProdutoRepository produtoRepository) {
+        this.produtoRepository = produtoRepository;
+    }
 
     public List<Produto> listAll() {
         return produtoRepository.findAll();
     }
 
-
-    public Produto save(Produto produto) {
-        return produtoRepository.save(produto);
+    public Produto save(Produto produto) throws ProdutoException {
+        Optional<Produto> existingProduto = produtoRepository.findByNome(produto.getNome());
+        if (existingProduto.isPresent()) {
+            throw new ProdutoException("Já existe um produto com esse nome");
+        }
+        try {
+            return produtoRepository.save(produto);
+        } catch (Exception e) {
+            throw new ProdutoException("Erro ao salvar o produto: " + e.getMessage());
+        }
     }
 
 
     public Optional<Produto> findById(Long id) throws ProdutoException {
-        return Optional.empty();
+        Optional<Produto> existingProduto = produtoRepository.findById(id);
+        if(existingProduto.isEmpty()){
+            throw  new ProdutoException("Produto Not Found");
+        }
+        return existingProduto;
     }
 
 
     public void deletById(Long id) throws ProdutoException {
+        Optional<Produto> existingProduto = produtoRepository.findById(id);
+        if(existingProduto.isEmpty()){
+            throw  new ProdutoException("Produto Not Found");
+        }
+        produtoRepository.deleteById(id);
+    }
 
+    @Override
+    public Produto update(Long id, Produto produto) throws ProdutoException {
+        Optional<Produto> existingProduto = produtoRepository.findById(id);
+        if(existingProduto.isEmpty()){
+            throw  new ProdutoException("Produto Not Found");
+        }
+        Produto updateProduto = existingProduto.get();
+        updateProduto.setNome(produto.getNome());
+        updateProduto.setPreco(produto.getPreco());
+        return produtoRepository.save(updateProduto);
     }
 }

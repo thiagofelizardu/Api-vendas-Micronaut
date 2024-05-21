@@ -12,11 +12,12 @@ public interface ProdutoServiceImpl {
 
     List<Produto> listAll();
 
-    Produto save(Produto produto);
+    Produto save(Produto produto) throws ProdutoException;
 
     Optional<Produto> findById(@NonNull Long id) throws ProdutoException;
 
     void deletById (Long id) throws ProdutoException;
 
+    Produto update (@NonNull Long id, Produto produto)throws ProdutoException;
 
 }
