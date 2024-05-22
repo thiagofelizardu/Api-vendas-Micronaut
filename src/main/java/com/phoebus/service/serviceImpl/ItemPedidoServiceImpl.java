@@ -1,9 +1,9 @@
-package com.phoebus.service;
+package com.phoebus.service.serviceImpl;
 
 import com.phoebus.entites.ItemPedido;
 import com.phoebus.exception.ItemDoPedidoException;
 import com.phoebus.repository.ItemDoPedidoRepository;
-import com.phoebus.service.ServiceImpl.ItemDoPedidoServiceImpl;
+import com.phoebus.service.ItemDoPedidoService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
-public class ItemPedidoService implements ItemDoPedidoServiceImpl {
+public class ItemPedidoServiceImpl implements ItemDoPedidoService {
 
     @Inject
     private ItemDoPedidoRepository itemDoPedidoRepository;

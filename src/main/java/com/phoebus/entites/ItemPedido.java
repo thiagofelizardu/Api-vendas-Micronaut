@@ -1,11 +1,22 @@
 package com.phoebus.entites;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.RequiredArgsConstructor;
+
+import java.io.Serializable;
 
 @Entity(name = "itempedido")
 @RequiredArgsConstructor
-public class ItemPedido {
+public class ItemPedido implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +31,7 @@ public class ItemPedido {
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
-    @Column(nullable = false)
+    @Column(name = "quantidade", nullable = false)
     private Long quantidade;
 
     public Long getId() {

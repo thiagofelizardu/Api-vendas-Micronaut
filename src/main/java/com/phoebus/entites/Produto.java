@@ -1,13 +1,24 @@
 package com.phoebus.entites;
 
 import io.micronaut.core.annotation.NonNull;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity(name = "produto")
 @RequiredArgsConstructor
-public class Produto {
+public class Produto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +31,12 @@ public class Produto {
 
     @Column(name = "preco")
     @NonNull
-    private double preco;
+    private Double preco;
+
+    @ManyToOne(cascade = CascadeType.ALL,optional = false)
+    @JoinColumn(name = "loja_id", nullable = false)
+    private Loja loja;
+
 
     public Long getId() {
         return id;
@@ -38,11 +54,19 @@ public class Produto {
         this.nome = nome;
     }
 
-    public double getPreco() {
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(double preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public Loja getLoja() {
+        return loja;
+    }
+
+    public void setLoja(Loja loja) {
+        this.loja = loja;
     }
 }

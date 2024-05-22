@@ -1,17 +1,26 @@
 package com.phoebus.entites;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Entity(name = "client")
 @RequiredArgsConstructor
-public class Client {
+public class Client implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +44,13 @@ public class Client {
     @Column(name = "city")
     private String city;
 
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "endereco_id", nullable = false)
+    private Endereco endereco;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pedido_id",nullable = false)
+    private List<Pedido> pedidos;
 
     public Long getId() {
         return id;
@@ -74,5 +90,21 @@ public class Client {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 }

@@ -51,7 +51,7 @@ public class ProdutoController {
     @Put("/{id}")
     @Status(HttpStatus.OK)
     public Produto produtoUpdate(@PathVariable Long id, @Body Produto produto) throws ProdutoException {
-        return produtoService.update(id,produto);
+        return produtoService.updateProduto(id,produto);
     }
 
 }

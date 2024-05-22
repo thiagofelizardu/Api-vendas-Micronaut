@@ -2,35 +2,20 @@ package com.phoebus.service;
 
 import com.phoebus.entites.Pedido;
 import com.phoebus.exception.PedidoException;
-import com.phoebus.repository.PedidoRepository;
-import com.phoebus.service.ServiceImpl.PedidoServiceImpl;
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
+import io.micronaut.core.annotation.NonNull;
 
 import java.util.List;
 import java.util.Optional;
 
-@Singleton
-public class PedidoService implements PedidoServiceImpl {
+public interface PedidoService {
 
-    @Inject
-    private PedidoRepository pedidoRepository;
+    List<Pedido> listAll();
 
-    public List<Pedido> listAll() {
-        return pedidoRepository.findAll();
-    }
+    Pedido save(Pedido pedido) throws PedidoException;
 
-    public Pedido save(Pedido pedido) {
-        return pedidoRepository.save(pedido);
-    }
+    Optional<Pedido> findById(@NonNull Long id) throws PedidoException;
 
+    void deleteById (Long id) throws PedidoException;
 
-    public Optional<Pedido> findById(Long id) throws PedidoException {
-        return Optional.empty();
-    }
-
-
-    public void deletById(Long id) throws PedidoException {
-
-    }
+    Pedido updatePedido(Long id , Pedido pedido)throws PedidoException;
 }
