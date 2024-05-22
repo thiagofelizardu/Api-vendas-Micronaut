@@ -46,6 +46,15 @@ public class ProdutoServiceImpl implements ProdutoService {
         return existingProduto;
     }
 
+    public Optional<Produto> findByNome(Produto produto)throws ProdutoException{
+        Optional<Produto> existingProduto = produtoRepository.findByNome(produto.getNome());
+        if (existingProduto.isEmpty()) {
+            throw new ProdutoException("Produto Not Found with name: " + produto.getNome());
+        }else {
+            return produtoRepository.findByNome(produto.getNome());
+        }
+    }
+
 
     public void deletById(Long id) throws ProdutoException {
         Optional<Produto> existingProduto = produtoRepository.findById(id);

@@ -26,8 +26,8 @@ public class Pedido implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL,optional = false)
-    @JoinColumn(name = "endereco_id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco enderecoEntrega;
 
     @ManyToOne

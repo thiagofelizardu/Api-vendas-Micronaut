@@ -1,7 +1,7 @@
 package com.phoebus.entites;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
@@ -18,16 +18,14 @@ public class Loja implements Serializable {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pedido_id", nullable = false)
+    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
     private List<Pedido> pedidos;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "produto_id", nullable = false)
+    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
     private List<Produto> produtos;
 
 

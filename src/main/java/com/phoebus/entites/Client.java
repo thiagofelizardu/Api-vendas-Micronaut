@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 
@@ -33,10 +34,11 @@ public class Client implements Serializable {
 
     @NotNull
     @Column(name = "cpf")
-    @Size(min = 11, max = 11 ,message = "CPF deve conter 11 digitos ")
+    @Size(min = 11, max = 11, message = "CPF deve conter 11 digitos ")
     private String cpf;
 
     @NotNull
+    @Positive
     @Column(name = "age")
     private Long age;
 
@@ -48,8 +50,7 @@ public class Client implements Serializable {
     @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pedido_id",nullable = false)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Pedido> pedidos;
 
     public Long getId() {

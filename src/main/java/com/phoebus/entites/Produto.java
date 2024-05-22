@@ -1,6 +1,5 @@
 package com.phoebus.entites;
 
-import io.micronaut.core.annotation.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
@@ -29,11 +29,11 @@ public class Produto implements Serializable {
     @Column(name = "nome")
     private String nome;
 
+    @NotNull
     @Column(name = "preco")
-    @NonNull
     private Double preco;
 
-    @ManyToOne(cascade = CascadeType.ALL,optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "loja_id", nullable = false)
     private Loja loja;
 
