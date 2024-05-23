@@ -1,6 +1,7 @@
 package com.phoebus.service;
 
 
+import com.phoebus.entites.DTO.ProdutoDTO;
 import com.phoebus.entites.Produto;
 import com.phoebus.exception.ProdutoException;
 import io.micronaut.core.annotation.NonNull;
@@ -12,7 +13,7 @@ public interface ProdutoService {
 
     List<Produto> listAll();
 
-    Produto save(Produto produto) throws ProdutoException;
+    Produto savedProduto(Long lojaId, ProdutoDTO produtoDTO ) throws ProdutoException;
 
     Optional<Produto> findById(@NonNull Long id) throws ProdutoException;
 

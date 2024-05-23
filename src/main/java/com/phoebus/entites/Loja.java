@@ -1,5 +1,6 @@
 package com.phoebus.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,12 @@ public class Loja implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "loja")
     private List<Pedido> pedidos;
 
-    @OneToMany(mappedBy = "loja", cascade = CascadeType.ALL)
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "loja")
+    @JsonIgnore
     private List<Produto> produtos;
 
 

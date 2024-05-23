@@ -19,7 +19,6 @@ public class LojaController {
     @Inject
     private final LojaService lojaService;
 
-
     public LojaController(LojaService lojaService) {
         this.lojaService = lojaService;
     }

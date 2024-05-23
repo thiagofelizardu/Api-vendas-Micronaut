@@ -24,7 +24,6 @@ CREATE TABLE client (
     name VARCHAR(255) NOT NULL,
     cpf VARCHAR(11) NOT NULL,
     age INTEGER NOT NULL,
-    city VARCHAR(255) NOT NULL,
     endereco_id INTEGER NOT NULL,
     FOREIGN KEY (endereco_id) REFERENCES endereco(id)
 );

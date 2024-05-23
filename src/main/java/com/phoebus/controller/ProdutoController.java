@@ -1,5 +1,6 @@
 package com.phoebus.controller;
 
+import com.phoebus.entites.DTO.ProdutoDTO;
 import com.phoebus.entites.Produto;
 import com.phoebus.exception.ProdutoException;
 import com.phoebus.service.ProdutoService;
@@ -8,31 +9,29 @@ import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller("/produto")
 @ExecuteOn(TaskExecutors.IO)
+@RequiredArgsConstructor
 public class ProdutoController {
 
     @Inject
     private final ProdutoService produtoService;
 
 
-    public ProdutoController(ProdutoService produtoService) {
-        this.produtoService = produtoService;
-    }
-
     @Get("/")
     @Status(HttpStatus.OK)
     public List<Produto> produtoList(){
         return produtoService.listAll();
     }
-    @Post
+    @Post("/")
     @Status(HttpStatus.CREATED)
-    public Produto produtoSaved(@Body Produto produto)throws ProdutoException  {
-        return produtoService.save(produto);
+    public Produto produtoSaved(@QueryValue Long lojaId,@Body ProdutoDTO produtoDTO )throws ProdutoException {
+        return produtoService.savedProduto( lojaId, produtoDTO );
     }
 
     @Get("/{id}")

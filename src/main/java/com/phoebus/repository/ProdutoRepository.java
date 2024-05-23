@@ -11,4 +11,6 @@ public interface ProdutoRepository extends CrudRepository<Produto,Long> {
 
     Optional<Produto> findByNome(String nome);
 
+    Optional<Produto> findByNomeAndLojaId(String nome, Long lojaId);
+
 }

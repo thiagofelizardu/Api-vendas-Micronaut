@@ -39,7 +39,6 @@
       <type>pom</type>
     </dependency>
 
-
     <!-- https://mvnrepository.com/artifact/io.micronaut.redis/micronaut-redis-lettuce -->
     <dependency>
       <groupId>io.micronaut.redis</groupId>
