@@ -10,11 +10,13 @@ import com.phoebus.repository.PedidoRepository;
 import com.phoebus.service.PedidoService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
 @Singleton
+@RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
 
     @Inject
@@ -24,12 +26,6 @@ public class PedidoServiceImpl implements PedidoService {
     @Inject
     private final LojaRepository lojaRepository;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository, ClientRepository clientRepository, LojaRepository lojaRepository) {
-        this.pedidoRepository = pedidoRepository;
-        this.clientRepository = clientRepository;
-        this.lojaRepository = lojaRepository;
-    }
-
     public List<Pedido> listAll() {
         return  pedidoRepository.findAll();
     }
@@ -38,21 +34,23 @@ public class PedidoServiceImpl implements PedidoService {
     public Pedido save(Pedido pedido) throws PedidoException {
         Optional<Client> client = clientRepository.findById(pedido.getClient().getId());
         if (client.isEmpty()) {
-            throw new PedidoException("Client not found with id: " + pedido.getClient().getId());
+            throw new PedidoException("Client não encontrado com esse id: " + pedido.getClient().getId());
         }
         Optional<Loja> loja = lojaRepository.findById(pedido.getLoja().getId());
         if (loja.isEmpty()) {
-            throw new PedidoException("Loja not found with id: " + pedido.getLoja().getId());
+            throw new PedidoException("Loja não encontrado com esse id: " + pedido.getLoja().getId());
         }
         pedido.setClient(client.get());
         pedido.setLoja(loja.get());
         return pedidoRepository.save(pedido);
     }
 
+
+
     public Optional<Pedido> findById(Long id) throws PedidoException {
         Optional<Pedido> existingPedido = pedidoRepository.findById(id);
         if (existingPedido.isEmpty()) {
-            throw new PedidoException("Pedido not found with id: " + id);
+            throw new PedidoException("Pedido não encontrado com esse id:" + id);
         }
         return existingPedido;
     }
@@ -60,7 +58,7 @@ public class PedidoServiceImpl implements PedidoService {
     public void deleteById(Long id) throws PedidoException {
         Optional<Pedido> existingPedido = pedidoRepository.findById(id);
         if (existingPedido.isEmpty()) {
-            throw new PedidoException("Pedido not found with id: " + id);
+            throw new PedidoException("Pedido não encontrado com esse id:" + id);
         }
         pedidoRepository.deleteById(id);
     }
@@ -68,10 +66,10 @@ public class PedidoServiceImpl implements PedidoService {
     public Pedido updatePedido(Long id , Pedido pedido)throws PedidoException{
         Optional<Pedido> existingPedido = pedidoRepository.findById(id);
         if (existingPedido.isEmpty()) {
-            throw new PedidoException("Pedido not found with id: " + id);
+            throw new PedidoException("Pedido não encontrado com esse id: " + id);
         }
         Pedido pedidoToUpdate = existingPedido.get();
-        pedidoToUpdate.setItensPedidos(pedido.getItensPedidos());
+        pedidoToUpdate.setItensPedido(pedido.getItensPedido());
         return pedidoRepository.save(pedidoToUpdate);
     }
 }

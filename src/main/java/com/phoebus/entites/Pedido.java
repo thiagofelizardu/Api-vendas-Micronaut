@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
@@ -39,7 +38,7 @@ public class Pedido implements Serializable {
     private Loja loja;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<ItemPedido> itensPedidos;
+    private List<ItemPedido> itensPedido;
 
     public Long getId() {
         return id;
@@ -73,11 +72,11 @@ public class Pedido implements Serializable {
         this.loja = loja;
     }
 
-    public List<ItemPedido> getItensPedidos() {
-        return itensPedidos;
+    public List<ItemPedido> getItensPedido() {
+        return itensPedido;
     }
 
-    public void setItensPedidos(List<ItemPedido> itensPedidos) {
-        this.itensPedidos = itensPedidos;
+    public void setItensPedido(List<ItemPedido> itensPedidos) {
+        this.itensPedido = itensPedidos;
     }
 }

@@ -28,10 +28,15 @@ public class ProdutoController {
     public List<Produto> produtoList(){
         return produtoService.listAll();
     }
-    @Post("/")
+
+    @Post("/loja/{lojaId}")
     @Status(HttpStatus.CREATED)
-    public Produto produtoSaved(@QueryValue Long lojaId,@Body ProdutoDTO produtoDTO )throws ProdutoException {
-        return produtoService.savedProduto( lojaId, produtoDTO );
+    public Produto produtoSaved(@PathVariable Long lojaId,@Body ProdutoDTO produtoDTO )throws ProdutoException {
+       try{
+           return produtoService.savedProduto( lojaId, produtoDTO );
+       }catch (Exception e){
+           throw  new ProdutoException("Erro ao salvar produto " + e.getMessage());
+       }
     }
 
     @Get("/{id}")

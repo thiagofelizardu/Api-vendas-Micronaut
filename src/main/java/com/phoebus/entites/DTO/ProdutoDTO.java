@@ -10,13 +10,12 @@ public class ProdutoDTO  {
 
     private String nome;
     private Double preco;
-    private Long lojaId;
+
 
     @Creator
-    public ProdutoDTO(String nome, Double preco, Long lojaId) {
+    public ProdutoDTO(String nome, Double preco) {
         this.nome = nome;
         this.preco = preco;
-        this.lojaId = lojaId;
     }
 
     public String getNome() {
@@ -35,11 +34,5 @@ public class ProdutoDTO  {
         this.preco = preco;
     }
 
-    public Long getLojaId() {
-        return lojaId;
-    }
 
-    public void setLojaId(Long lojaId) {
-        this.lojaId = lojaId;
-    }
 }

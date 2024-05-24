@@ -31,8 +31,12 @@ public class LojaController {
 
     @Post
     @Status(HttpStatus.CREATED)
-    public Loja lojaSaved(@Body Loja loja){
-        return lojaService.save(loja);
+    public Loja lojaSaved(@Body Loja loja)throws LojaException{
+        try {
+            return lojaService.save(loja);
+        }catch (Exception e){
+            throw new LojaException("Erro em salvar loja "+ e.getMessage());
+        }
     }
     @Get("/{id}")
     @Status(HttpStatus.OK)

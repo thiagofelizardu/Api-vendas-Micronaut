@@ -30,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
     public Optional<Client> findById(@NonNull Long id) throws ClientException {
         Optional<Client> client = clientRepository.findById(id);
         if(client.isEmpty()){
-            throw new ClientException("Client não Achado com esse id: "+id);
+            throw new ClientException("cliente não encontrado com esse id: "+id);
         }
         return client;
     }
@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
     public Client update(@NonNull Long id ,Client client) throws ClientException{
         Optional<Client> existingClient = clientRepository.findById(id);
         if (existingClient.isEmpty()){
-            throw new ClientException("Client não Achado com esse id: "+id);
+            throw new ClientException("cliente não encontrado com esse id: "+id);
         }
         Client updateClient = existingClient.get();
         updateClient.setName(client.getName());
@@ -51,7 +51,7 @@ public class ClientServiceImpl implements ClientService {
     public void deleteById(Long id)throws ClientException {
         Optional<Client> client = clientRepository.findById(id);
         if (client.isEmpty()){
-            throw new ClientException("Client não Achado com esse id: "+id);
+            throw new ClientException("cliente não encontrado com esse id: "+id);
         }
         clientRepository.deleteById(id);
     }

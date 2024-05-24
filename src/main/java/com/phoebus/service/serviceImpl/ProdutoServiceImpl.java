@@ -21,9 +21,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Inject
     private final ProdutoRepository produtoRepository;
-
+    @Inject
     private final LojaRepository lojaRepository;
-
 
     public List<Produto> listAll() {
         return produtoRepository.findAll();
@@ -32,7 +31,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Produto savedProduto(@NonNull Long lojaId, ProdutoDTO produtoDTO) throws ProdutoException {
         Optional<Loja> existingLoja = lojaRepository.findById(lojaId);
         if (existingLoja.isEmpty()) {
-            throw new ProdutoException("Loja não encontrada com ID: " + lojaId);
+            throw new ProdutoException("Loja não encontrada com id:" + lojaId);
         }
         Optional<Produto> existingProduto = produtoRepository.findByNomeAndLojaId(produtoDTO.getNome(), lojaId);
         if (existingProduto.isPresent()) {
@@ -54,7 +53,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Optional<Produto> findById(Long id) throws ProdutoException {
         Optional<Produto> existingProduto = produtoRepository.findById(id);
         if(existingProduto.isEmpty()){
-            throw  new ProdutoException("Produto Not Found with id:"+id);
+            throw  new ProdutoException("Produto não encontrado com esse id :"+id);
         }
         return existingProduto;
     }
@@ -62,7 +61,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Optional<Produto> findByNome(Produto produto)throws ProdutoException{
         Optional<Produto> existingProduto = produtoRepository.findByNome(produto.getNome());
         if (existingProduto.isEmpty()) {
-            throw new ProdutoException("Produto Not Found with name: " + produto.getNome());
+            throw new ProdutoException("Produto não encontrado com esse nome: " + produto.getNome());
         }else {
             return produtoRepository.findByNome(produto.getNome());
         }
@@ -72,7 +71,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     public void deletById(Long id) throws ProdutoException {
         Optional<Produto> existingProduto = produtoRepository.findById(id);
         if(existingProduto.isEmpty()){
-            throw  new ProdutoException("Produto Not Found with id:"+id);
+            throw  new ProdutoException("Produto não encontrado com esse id :"+id);
         }
         produtoRepository.deleteById(id);
     }

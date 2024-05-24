@@ -7,16 +7,18 @@ import com.phoebus.service.LojaService;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
 
 @Singleton
+@RequiredArgsConstructor
 public class LojaServiceImpl implements LojaService {
 
     @Inject
-    private LojaRepository lojaRepository;
+    private final LojaRepository lojaRepository;
 
 
     public List<Loja> listAll() {
@@ -30,7 +32,7 @@ public class LojaServiceImpl implements LojaService {
     public Optional<Loja> findById(Long id) throws LojaException {
         Optional<Loja> existingLoja = lojaRepository.findById(id);
         if(existingLoja.isEmpty()){
-            throw new LojaException("Loja Not Found with id" + id );
+            throw new LojaException("Loja não encontrada com esse id " + id );
         }
         return existingLoja;
     }
@@ -39,7 +41,7 @@ public class LojaServiceImpl implements LojaService {
     public void deletById(Long id) throws LojaException {
         Optional<Loja> existingLoja = lojaRepository.findById(id);
         if(existingLoja.isEmpty()){
-            throw new LojaException("Loja Not Found with id" + id );
+            throw new LojaException("Loja não encontrada com esse id " + id );
         }
          lojaRepository.deleteById(id);
     }
@@ -47,7 +49,7 @@ public class LojaServiceImpl implements LojaService {
     public Loja update(@NonNull Long id, Loja loja) throws LojaException {
         Optional<Loja> existingLoja = lojaRepository.findById(id);
         if (existingLoja.isEmpty()) {
-            throw new LojaException("Loja Not Found with id" + id );
+            throw new LojaException("Loja não encontrada com esse id " + id );
         }
         Loja updatedLoja = existingLoja.get();
         updatedLoja.setName(loja.getName());

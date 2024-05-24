@@ -8,20 +8,18 @@ import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller("/pedido")
 @ExecuteOn(TaskExecutors.IO)
+@RequiredArgsConstructor
 public class PedidoController {
 
     @Inject
     private final PedidoService pedidoService;
-
-    public PedidoController(PedidoService pedidoService) {
-        this.pedidoService = pedidoService;
-    }
 
     @Get("/")
     @Status(HttpStatus.OK)
@@ -32,27 +30,29 @@ public class PedidoController {
     @Post
     @Status(HttpStatus.CREATED)
     public Pedido pedidoSaved(@Body Pedido pedido)throws PedidoException{
-        return pedidoService.save(pedido);
+        try {
+            return pedidoService.save(pedido);
+        }catch (Exception e){
+            throw new PedidoException("Erro em salvar o Pedido " + e.getMessage());
+        }
     }
 
     @Get("/{id}")
     @Status(HttpStatus.OK)
-    public Optional<Pedido> produtoFindById(@PathVariable Long id)throws PedidoException {
+    public Optional<Pedido> pedidoFindById(@PathVariable Long id)throws PedidoException {
         return pedidoService.findById(id);
     }
 
-
     @Delete("/{id}")
     @Status(HttpStatus.NO_CONTENT)
-    public void produtoDeleteById(@PathVariable Long id)throws PedidoException {
+    public void pedidoDeleteById(@PathVariable Long id)throws PedidoException {
         pedidoService.deleteById(id);
     }
 
     @Put("/{id}")
     @Status(HttpStatus.OK)
-    public Pedido produtoUpdate(@PathVariable Long id, @Body Pedido pedido) throws PedidoException {
+    public Pedido pedidoUpdate(@PathVariable Long id, @Body Pedido pedido) throws PedidoException {
         return pedidoService.updatePedido(id,pedido);
     }
-
 
 }
