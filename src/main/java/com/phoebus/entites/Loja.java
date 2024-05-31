@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name = "Loja")
+@Entity(name = "tb_loja")
 @RequiredArgsConstructor
 public class Loja implements Serializable {
 

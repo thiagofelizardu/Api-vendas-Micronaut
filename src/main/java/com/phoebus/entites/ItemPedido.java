@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
-@Entity(name = "itempedido")
+@Entity(name = "tb_itempedido")
 @RequiredArgsConstructor
 public class ItemPedido implements Serializable {
 

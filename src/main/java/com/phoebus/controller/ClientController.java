@@ -1,6 +1,7 @@
 package com.phoebus.controller;
 
-import com.phoebus.entites.Client;
+import com.phoebus.entites.Cliente;
+import com.phoebus.entites.DTO.ClienteDTO;
 import com.phoebus.exception.ClientException;
 import com.phoebus.service.ClientService;
 import io.micronaut.http.HttpStatus;
@@ -17,7 +18,6 @@ import io.micronaut.scheduling.annotation.ExecuteOn;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller("/client")
 @ExecuteOn(TaskExecutors.IO)
@@ -31,13 +31,13 @@ public class ClientController {
 
     @Get("/")
     @Status(HttpStatus.OK)
-    public List<Client> clientList() {
+    public List<ClienteDTO> clientList()  throws ClientException{
         return clientService.listAll();
     }
 
     @Post
     @Status(HttpStatus.CREATED)
-    public Client clientSave(@Body Client client) throws ClientException{
+    public ClienteDTO clientSave(@Body ClienteDTO client) throws ClientException{
         try {
             return clientService.save(client);
         }catch (Exception e){
@@ -47,14 +47,14 @@ public class ClientController {
 
     @Get("/{id}")
     @Status(HttpStatus.OK)
-    public Optional<Client> clientFindById(@PathVariable Long id) throws ClientException {
+    public ClienteDTO clientFindById(@PathVariable Long id) throws ClientException {
         return clientService.findById(id);
     }
 
     @Put("/{id}")
     @Status(HttpStatus.OK)
-    public void clientUpdate(@PathVariable Long id, @Body Client client) throws ClientException {
-        clientService.update(id, client);
+    public ClienteDTO clientUpdate(@PathVariable Long id, @Body ClienteDTO clienteDTO) throws ClientException {
+        return clientService.update(id, clienteDTO);
     }
 
     @Delete("delete/{id}")

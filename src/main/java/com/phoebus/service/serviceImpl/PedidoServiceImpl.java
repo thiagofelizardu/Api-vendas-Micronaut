@@ -1,6 +1,6 @@
 package com.phoebus.service.serviceImpl;
 
-import com.phoebus.entites.Client;
+import com.phoebus.entites.Cliente;
 import com.phoebus.entites.Loja;
 import com.phoebus.entites.Pedido;
 import com.phoebus.exception.PedidoException;
@@ -32,7 +32,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 
     public Pedido save(Pedido pedido) throws PedidoException {
-        Optional<Client> client = clientRepository.findById(pedido.getClient().getId());
+        Optional<Cliente> client = clientRepository.findById(pedido.getClient().getId());
         if (client.isEmpty()) {
             throw new PedidoException("Client não encontrado com esse id: " + pedido.getClient().getId());
         }

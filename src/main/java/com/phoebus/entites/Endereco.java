@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
-@Entity(name = "Endereco")
+@Entity(name = "tb_endereco")
 @RequiredArgsConstructor
 public class Endereco implements Serializable {
 

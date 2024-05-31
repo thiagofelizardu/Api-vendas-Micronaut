@@ -19,6 +19,15 @@ datasources:
     password: 123456
     schema-generate: UPDATE
     dialect: io.micronaut.data.model.query.builder.sql.Dialect.POSTGRES
+    hikari:
+      minimum-idle: 5 #Número mínimo de conexões ociosas que HikariCP tenta manter no pool.
+      maximum-pool-size: 20 #Número máximo de conexões no pool.
+      idle-timeout: 300000 #Tempo máximo que uma conexão ociosa pode permanecer no pool antes de ser removida (em milissegundos).
+      max-lifetime: 1800000 # Tempo máximo de vida útil para uma conexão no pool (em milissegundos).
+      connection-timeout: 30000 #Tempo máximo que o HikariCP espera para obter uma conexão do pool (em milissegundos).
+      pool-name: MeuHikariPool # Nome do pool de conexões.
+
+
 
 mongodb:
   uri : mongodb://127.0.0.1:27017/EstudosMicronaut

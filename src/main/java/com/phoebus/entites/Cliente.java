@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name = "client")
+@Entity(name = "tb_client")
 @RequiredArgsConstructor
-public class Client implements Serializable {
+public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,8 +30,8 @@ public class Client implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name")
-    private String name;
+    @Column(name = "nome")
+    private String nome;
 
     @NotNull
     @Column(name = "cpf")
@@ -40,8 +40,8 @@ public class Client implements Serializable {
 
     @NotNull
     @Positive
-    @Column(name = "age")
-    private Long age;
+    @Column(name = "idade")
+    private Long idade;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "endereco_id", nullable = false)
@@ -58,12 +58,12 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCpf() {
@@ -74,12 +74,12 @@ public class Client implements Serializable {
         this.cpf = cpf;
     }
 
-    public Long getAge() {
-        return age;
+    public Long getIdade() {
+        return idade;
     }
 
-    public void setAge(Long age) {
-        this.age = age;
+    public void setIdade(Long age) {
+        this.idade = age;
     }
 
     public Endereco getEndereco() {
