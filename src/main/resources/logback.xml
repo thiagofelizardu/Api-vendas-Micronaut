@@ -8,10 +8,6 @@
         </encoder>
     </appender>
 
-    <!-- Log de SQL do Hibernate -->
-    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
 
     <!-- Log de valores dos parâmetros do Hibernate -->
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">

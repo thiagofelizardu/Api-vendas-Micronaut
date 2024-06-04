@@ -2,80 +2,74 @@ package com.phoebus.service.serviceImpl;
 
 import com.phoebus.entites.Cliente;
 import com.phoebus.entites.DTO.ClienteDTO;
+import com.phoebus.entites.DTO.EnderecoDTO;
+import com.phoebus.entites.Endereco;
 import com.phoebus.exception.ClientException;
-import com.phoebus.exception.ProdutoException;
 import com.phoebus.repository.ClientRepository;
 import com.phoebus.service.ClientService;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Singleton
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
     @Inject
-    private final ClientRepository clientRepository;
+    private final ClientRepository clienteRepository;
 
-    public List<ClienteDTO> listAll() {
-        List<Cliente> clientes = clientRepository.findAll();
-        return clientes.stream()
-                .map(ClienteDTO::convertClienteDTO)
-                .collect(Collectors.toList());
+    public Page<ClienteDTO> listAll(Pageable pageable) {
+        Page<Cliente> clientesPage = clienteRepository.findAll(pageable);
+        return clientesPage.map(ClienteDTO::convertClienteDTO);
     }
 
-    public ClienteDTO save(ClienteDTO client) throws ClientException {
+    public ClienteDTO save(ClienteDTO client) {
         Cliente cliente = new Cliente();
         cliente.setNome(client.getNome());
         cliente.setCpf(client.getCpf());
         cliente.setIdade(client.getIdade());
-        cliente.setEndereco(client.getEndereco());
+        Endereco endereco = EnderecoDTO.convertToEndereco(client.getEndereco());
+        cliente.setEndereco(endereco);
         try {
-           cliente = clientRepository.save(cliente);
-           return ClienteDTO.convertClienteDTO(cliente);
-        }catch (Exception e){
-            throw new ClientException("Erro ao salvar o cliente: " + e.getMessage());
+            cliente = clienteRepository.save(cliente);
+            return ClienteDTO.convertClienteDTO(cliente);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao salvar o cliente: " + e.getMessage());
         }
     }
 
     public ClienteDTO findById(@NonNull Long id) throws ClientException {
-        Optional<Cliente> client = clientRepository.findById(id);
-        if(client.isEmpty()){
-            throw new ClientException("Cliente não encontrado com esse id: "+id);
-        }
-        return ClienteDTO.convertClienteDTO(client.get());
+        Cliente client = clienteRepository.findById(id)
+                .orElseThrow(() -> new ClientException(id));
+        return ClienteDTO.convertClienteDTO(client);
     }
 
-
-    public ClienteDTO update(@NonNull Long id , ClienteDTO client) throws ClientException{
-        Optional<Cliente> existingClient = clientRepository.findById(id);
-        if (existingClient.isEmpty()){
-            throw new ClientException("Cliente não encontrado com esse id: "+id);
-        }
-        Cliente updateClient = existingClient.get();
-        updateClient.setNome(client.getNome());
-        updateClient.setCpf(client.getCpf());
-        updateClient.setIdade(client.getIdade());
-        updateClient.setEndereco(client.getEndereco());
-        try{
-            updateClient = clientRepository.save(updateClient);
-            return ClienteDTO.convertClienteDTO(updateClient);
-        }catch (Exception e) {
-            throw new ClientException("Erro ao atualizar o cliente: " + e.getMessage());
+    @Transactional
+    public ClienteDTO update(@NonNull Long id, ClienteDTO client) throws ClientException {
+        Cliente existingClient = clienteRepository.findById(id)
+                .orElseThrow(() ->new ClientException(id));
+        existingClient.setNome(client.getNome());
+        existingClient.setCpf(client.getCpf());
+        existingClient.setIdade(client.getIdade());
+        Endereco endereco = EnderecoDTO.convertToEndereco(client.getEndereco());
+        existingClient.setEndereco(endereco);
+        try {
+            Cliente updatedClient = clienteRepository.save(existingClient);
+            return ClienteDTO.convertClienteDTO(updatedClient);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar o cliente: " + e.getMessage());
         }
     }
+
 
     public void deleteById(Long id)throws ClientException {
-        Optional<Cliente> client = clientRepository.findById(id);
-        if (client.isEmpty()){
-            throw new ClientException("Cliente não encontrado com esse id: "+id);
-        }
-        clientRepository.deleteById(id);
+        clienteRepository.findById(id)
+                .orElseThrow(()-> new ClientException(id));
+        clienteRepository.deleteById(id);
     }
 
 }

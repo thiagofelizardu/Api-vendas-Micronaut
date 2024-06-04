@@ -1,7 +1,9 @@
 package com.phoebus.controller;
 
-import com.phoebus.entites.Pedido;
+import com.phoebus.entites.DTO.PedidoDTO;
+import com.phoebus.exception.ClientException;
 import com.phoebus.exception.PedidoException;
+import com.phoebus.exception.ProdutoException;
 import com.phoebus.service.PedidoService;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
@@ -11,7 +13,6 @@ import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller("/pedido")
 @ExecuteOn(TaskExecutors.IO)
@@ -23,23 +24,19 @@ public class PedidoController {
 
     @Get("/")
     @Status(HttpStatus.OK)
-    public List<Pedido> pedidoList(){
+    public List<PedidoDTO> pedidoList(){
         return pedidoService.listAll();
     }
 
-    @Post
+    @Post("/Client/{idCliente}")
     @Status(HttpStatus.CREATED)
-    public Pedido pedidoSaved(@Body Pedido pedido)throws PedidoException{
-        try {
-            return pedidoService.save(pedido);
-        }catch (Exception e){
-            throw new PedidoException("Erro em salvar o Pedido " + e.getMessage());
-        }
+    public PedidoDTO save(@PathVariable Long idCliente ,@Body PedidoDTO pedidoDTO) throws ClientException, ProdutoException {
+        return pedidoService.save(idCliente,pedidoDTO);
     }
 
     @Get("/{id}")
     @Status(HttpStatus.OK)
-    public Optional<Pedido> pedidoFindById(@PathVariable Long id)throws PedidoException {
+    public PedidoDTO pedidoFindById(@PathVariable Long id)throws PedidoException {
         return pedidoService.findById(id);
     }
 
@@ -51,7 +48,7 @@ public class PedidoController {
 
     @Put("/{id}")
     @Status(HttpStatus.OK)
-    public Pedido pedidoUpdate(@PathVariable Long id, @Body Pedido pedido) throws PedidoException {
+    public PedidoDTO pedidoUpdate(@PathVariable Long id, @Body PedidoDTO pedido) throws PedidoException {
         return pedidoService.updatePedido(id,pedido);
     }
 

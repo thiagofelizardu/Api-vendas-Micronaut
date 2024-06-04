@@ -28,13 +28,6 @@ datasources:
       pool-name: MeuHikariPool # Nome do pool de conexões.
 
 
-
-mongodb:
-  uri : mongodb://127.0.0.1:27017/EstudosMicronaut
-
-redis:
-  uri: redis://192.168.20.205:6379
-
 jpa:
   default:
     properties:

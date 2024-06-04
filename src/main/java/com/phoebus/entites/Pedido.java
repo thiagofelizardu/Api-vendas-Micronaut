@@ -1,6 +1,6 @@
 package com.phoebus.entites;
 
-import com.phoebus.entites.enums.FormaDePagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 
@@ -19,23 +19,13 @@ public class Pedido implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "endereco_id", nullable = false)
-    private Endereco enderecoEntrega;
-
-    @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonIgnore
     private Cliente client;
 
-    @ManyToOne
-    @JoinColumn(name = "loja_id", nullable = false)
-    private Loja loja;
-
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<ItemPedido> itensPedido;
-
-    @Column(name = "pagamento",nullable = false)
-    @Enumerated(EnumType.STRING)
-    private FormaDePagamento formaDePagamento;
 
     public Long getId() {
         return id;
@@ -43,14 +33,6 @@ public class Pedido implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Endereco getEnderecoEntrega() {
-        return enderecoEntrega;
-    }
-
-    public void setEnderecoEntrega(Endereco enderecoEntrega) {
-        this.enderecoEntrega = enderecoEntrega;
     }
 
     public Cliente getClient() {
@@ -61,14 +43,6 @@ public class Pedido implements Serializable {
         this.client = client;
     }
 
-    public Loja getLoja() {
-        return loja;
-    }
-
-    public void setLoja(Loja loja) {
-        this.loja = loja;
-    }
-
     public List<ItemPedido> getItensPedido() {
         return itensPedido;
     }
@@ -77,12 +51,4 @@ public class Pedido implements Serializable {
         this.itensPedido = itensPedidos;
     }
 
-
-    public FormaDePagamento getFormaDePagamento() {
-        return formaDePagamento;
-    }
-
-    public void setFormaDePagamento(FormaDePagamento formaDePagamento) {
-        this.formaDePagamento = formaDePagamento;
-    }
 }

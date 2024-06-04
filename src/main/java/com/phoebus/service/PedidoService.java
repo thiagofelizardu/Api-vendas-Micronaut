@@ -1,21 +1,23 @@
 package com.phoebus.service;
 
-import com.phoebus.entites.Pedido;
+import com.phoebus.entites.DTO.PedidoDTO;
+
+import com.phoebus.exception.ClientException;
 import com.phoebus.exception.PedidoException;
-import io.micronaut.core.annotation.NonNull;
+import com.phoebus.exception.ProdutoException;
+
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PedidoService {
 
-    List<Pedido> listAll();
+    List<PedidoDTO> listAll();
 
-    Pedido save(Pedido pedido) throws PedidoException;
+    PedidoDTO save(Long idCliente, PedidoDTO pedidoDTO) throws ClientException, ProdutoException;
 
-    Optional<Pedido> findById(@NonNull Long id) throws PedidoException;
+    PedidoDTO findById(Long id) throws PedidoException ;
 
     void deleteById (Long id) throws PedidoException;
 
-    Pedido updatePedido(Long id , Pedido pedido)throws PedidoException;
+    PedidoDTO updatePedido(Long id, PedidoDTO pedidoDTO) throws PedidoException;
 }

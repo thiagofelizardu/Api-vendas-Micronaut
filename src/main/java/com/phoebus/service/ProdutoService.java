@@ -10,11 +10,11 @@ public interface ProdutoService {
 
     List<ProdutoDTO> listAll();
 
-    ProdutoDTO saveProduto(Long lojaId, ProdutoDTO produtoDTO) throws ProdutoException;
+    ProdutoDTO saveProduto( ProdutoDTO produtoDTO) throws ProdutoException;
 
     ProdutoDTO findById(@NonNull Long id) throws ProdutoException;
 
-    ProdutoDTO findByNome(@NonNull String nome) throws ProdutoException;
+//    ProdutoDTO findByNome(@NonNull String nome) throws ProdutoException;
 
     void deleteById(@NonNull Long id) throws ProdutoException;
 

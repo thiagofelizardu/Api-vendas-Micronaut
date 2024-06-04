@@ -1,10 +1,8 @@
 package com.phoebus.service.serviceImpl;
 
 import com.phoebus.entites.DTO.ProdutoDTO;
-import com.phoebus.entites.Loja;
 import com.phoebus.entites.Produto;
 import com.phoebus.exception.ProdutoException;
-import com.phoebus.repository.LojaRepository;
 import com.phoebus.repository.ProdutoRepository;
 import com.phoebus.service.ProdutoService;
 import io.micronaut.core.annotation.NonNull;
@@ -13,7 +11,6 @@ import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -22,9 +19,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Inject
     private final ProdutoRepository produtoRepository;
-    @Inject
-    private final LojaRepository lojaRepository;
-
 
     public List<ProdutoDTO> listAll() {
         List<Produto> produtos = produtoRepository.findAll();
@@ -34,68 +28,52 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
 
-    public ProdutoDTO saveProduto(@NonNull Long lojaId, ProdutoDTO produtoDTO) throws ProdutoException {
-        Optional<Loja> existingLoja = lojaRepository.findById(lojaId);
-        if (existingLoja.isEmpty()) {
-            throw new ProdutoException("Loja não encontrada com id: " + lojaId);
-        }
-        Optional<Produto> existingProduto = produtoRepository.findByNomeAndLojaId(produtoDTO.getNome(), lojaId);
-        if (existingProduto.isPresent()) {
-            throw new ProdutoException("Já existe um produto com esse nome " + produtoDTO.getNome() + " na loja com esse id: " + lojaId);
+    public ProdutoDTO saveProduto( ProdutoDTO produtoDTO) throws ProdutoException {
+        if (produtoRepository.findByNome(produtoDTO.getNome()).isPresent()) {
+            throw new ProdutoException(produtoDTO.getNome());
         }
         Produto produto = new Produto();
         produto.setNome(produtoDTO.getNome());
         produto.setPreco(produtoDTO.getPreco());
-        produto.setLoja(existingLoja.get());
         try {
             produto = produtoRepository.save(produto);
             return ProdutoDTO.convertProdutoDTO(produto);
         } catch (Exception e) {
-            throw new ProdutoException("Erro ao salvar o produto: " + e.getMessage());
+            throw new RuntimeException("Erro ao salvar o produto: " + e.getMessage());
         }
     }
 
 
     public ProdutoDTO findById(@NonNull Long id) throws ProdutoException {
-        Optional<Produto> existingProduto = produtoRepository.findById(id);
-        if (existingProduto.isEmpty()) {
-            throw new ProdutoException("Produto não encontrado com esse id: " + id);
-        }
-        return ProdutoDTO.convertProdutoDTO(existingProduto.get());
+        Produto existingProduto = produtoRepository.findById(id)
+                .orElseThrow(() -> new ProdutoException(id));
+        return ProdutoDTO.convertProdutoDTO(existingProduto);
     }
 
 
-    public ProdutoDTO findByNome(String nome) throws ProdutoException {
-        Optional<Produto> existingProduto = produtoRepository.findByNome(nome);
-        if (existingProduto.isEmpty()) {
-            throw new ProdutoException("Produto não encontrado com esse nome: " + nome);
-        }
-        return ProdutoDTO.convertProdutoDTO(existingProduto.get());
-    }
-
+//    public ProdutoDTO findByNome(String nome) throws ProdutoException {
+//        Produto existingProduto = produtoRepository.findByNome(nome)
+//                .orElseThrow(() -> new ProdutoException(nome));
+//        return ProdutoDTO.convertProdutoDTO(existingProduto);
+//    }
 
     public void deleteById(Long id) throws ProdutoException {
-        Optional<Produto> existingProduto = produtoRepository.findById(id);
-        if (existingProduto.isEmpty()) {
-            throw new ProdutoException("Produto não encontrado com esse id: " + id);
-        }
+        produtoRepository.findById(id)
+                .orElseThrow(() -> new ProdutoException( id));
         produtoRepository.deleteById(id);
     }
 
-
     public ProdutoDTO updateProduto(Long id, ProdutoDTO produtoDTO) throws ProdutoException {
-        Optional<Produto> existingProduto = produtoRepository.findById(id);
-        if (existingProduto.isEmpty()) {
-            throw new ProdutoException("Produto não encontrado com esse id: " + id);
-        }
-        Produto updateProduto = existingProduto.get();
-        updateProduto.setNome(produtoDTO.getNome());
-        updateProduto.setPreco(produtoDTO.getPreco());
+        Produto existingProduto = produtoRepository.findById(id)
+                .orElseThrow(() -> new ProdutoException(id));
+        existingProduto.setNome(produtoDTO.getNome());
+        existingProduto.setPreco(produtoDTO.getPreco());
         try {
-            updateProduto = produtoRepository.save(updateProduto);
-            return ProdutoDTO.convertProdutoDTO(updateProduto);
+            Produto updatedProduto = produtoRepository.save(existingProduto);
+            return ProdutoDTO.convertProdutoDTO(updatedProduto);
         } catch (Exception e) {
-            throw new ProdutoException("Erro ao atualizar o produto: " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar o produto: " + e.getMessage());
         }
     }
 }
+

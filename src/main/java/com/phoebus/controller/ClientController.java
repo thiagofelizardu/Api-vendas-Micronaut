@@ -1,9 +1,10 @@
 package com.phoebus.controller;
 
-import com.phoebus.entites.Cliente;
 import com.phoebus.entites.DTO.ClienteDTO;
 import com.phoebus.exception.ClientException;
 import com.phoebus.service.ClientService;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -15,9 +16,6 @@ import io.micronaut.http.annotation.Put;
 import io.micronaut.http.annotation.Status;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
-
-
-import java.util.List;
 
 @Controller("/client")
 @ExecuteOn(TaskExecutors.IO)
@@ -31,18 +29,14 @@ public class ClientController {
 
     @Get("/")
     @Status(HttpStatus.OK)
-    public List<ClienteDTO> clientList()  throws ClientException{
-        return clientService.listAll();
+    public Page<ClienteDTO> listAll(Pageable pageable) throws ClientException {
+        return clientService.listAll(pageable);
     }
 
     @Post
     @Status(HttpStatus.CREATED)
-    public ClienteDTO clientSave(@Body ClienteDTO client) throws ClientException{
-        try {
-            return clientService.save(client);
-        }catch (Exception e){
-            throw  new ClientException("Erro em salvar cliente " + e.getMessage());
-        }
+    public ClienteDTO clientSaved(@Body ClienteDTO client){
+        return clientService.save(client);
     }
 
     @Get("/{id}")
@@ -58,7 +52,7 @@ public class ClientController {
     }
 
     @Delete("delete/{id}")
-    @Status(HttpStatus.ACCEPTED)
+    @Status(HttpStatus.OK)
     public void ClientDeleteById(@PathVariable Long id) throws ClientException {
         clientService.deleteById(id);
     }
