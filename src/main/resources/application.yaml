@@ -4,11 +4,11 @@ micronaut:
   server:
     port: 9090
 
-flyway:
-  locations:
-      classpath: 'db/migration/'
-  database-name: postgres
-  enabled: true
+liquibase:
+  datasources:
+    default:
+      enabled: true
+      change-log: 'classpath:db/migration/changelog/liquibase-changelog.xml'
 
 # Data Source Configuration
 datasources:

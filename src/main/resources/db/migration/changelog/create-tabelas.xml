@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="2" author="thiago">
+        <createTable tableName="tb_endereco" schemaName="EstudosMicronaut">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="logradouro" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cidade" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="thiago">
+        <createTable tableName="tb_produto" schemaName="EstudosMicronaut">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preco" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="thiago">
+        <createTable tableName="tb_client" schemaName="EstudosMicronaut">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cpf" type="VARCHAR(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="endereco_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tb_client"
+                                 baseColumnNames="endereco_id"
+                                 constraintName="fk_client_endereco"
+                                 referencedTableName="tb_endereco"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="5" author="thiago">
+        <createTable tableName="tb_pedido" schemaName="EstudosMicronaut">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="cliente_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tb_pedido"
+                                 baseColumnNames="cliente_id"
+                                 constraintName="fk_pedido_cliente"
+                                 referencedTableName="tb_client"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="6" author="thiago">
+        <createTable tableName="tb_item_pedido" schemaName="EstudosMicronaut">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="pedido_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="produto_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantidade" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tb_item_pedido"
+                                 baseColumnNames="pedido_id"
+                                 constraintName="fk_itempedido_pedido"
+                                 referencedTableName="tb_pedido"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="tb_item_pedido"
+                                 baseColumnNames="produto_id"
+                                 constraintName="fk_itempedido_produto"
+                                 referencedTableName="tb_produto"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
