@@ -30,7 +30,7 @@ public class PedidoServiceImpl implements PedidoService {
     private final PedidoRepository pedidoRepository;
     @Inject
     private final ClientRepository clientRepository;
-
+    @Inject
     private final ProdutoRepository produtoRepository;
 
     public List<PedidoDTO> listAll() {

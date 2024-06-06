@@ -18,23 +18,32 @@ public class PedidoDTO implements Serializable {
     private Long clienteId;
     private String nomeCliente;
     private List<ItemDoPedidoDTO> itensPedido;
+    private Double valorTotal;
 
     @Creator
-    public PedidoDTO(Long pedidoId, Long clienteId,String nomeCliente, List<ItemDoPedidoDTO> itensPedido) {
+    public PedidoDTO(Long pedidoId, Long clienteId, String nomeCliente, List<ItemDoPedidoDTO> itensPedido, Double valorTotal) {
         this.pedidoId = pedidoId;
-        this.nomeCliente = nomeCliente;
         this.clienteId = clienteId;
+        this.nomeCliente = nomeCliente;
         this.itensPedido = itensPedido;
+        this.valorTotal = valorTotal;
     }
 
     public static PedidoDTO convertPedidoDTO(Pedido pedido) {
+        List<ItemDoPedidoDTO> itensPedido = pedido.getItensPedido().stream()
+                .map(ItemDoPedidoDTO::convertItemPedidoDTO)
+                .collect(Collectors.toList());
+
+        Double valorTotal = itensPedido.stream()
+                .mapToDouble(item -> item.getPrecoProduto() * item.getQuantidade())
+                .sum();
+
         return new PedidoDTO(
                 pedido.getId(),
                 pedido.getClient().getId(),
                 pedido.getClient().getNome(),
-                pedido.getItensPedido().stream()
-                        .map(ItemDoPedidoDTO::convertItemPedidoDTO)
-                        .collect(Collectors.toList())
+                itensPedido,
+                valorTotal
         );
     }
 }

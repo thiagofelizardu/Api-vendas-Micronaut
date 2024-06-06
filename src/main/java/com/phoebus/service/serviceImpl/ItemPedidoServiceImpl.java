@@ -10,15 +10,17 @@ import com.phoebus.repository.ProdutoRepository;
 import com.phoebus.service.ItemDoPedidoService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import lombok.RequiredArgsConstructor;
 
 @Singleton
+@RequiredArgsConstructor
 public class ItemPedidoServiceImpl implements ItemDoPedidoService {
 
     @Inject
-    private ItemDoPedidoRepository itemDoPedidoRepository;
+    private final ItemDoPedidoRepository itemDoPedidoRepository;
 
     @Inject
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
 
     public void deletById(Long id) throws ItemDoPedidoException {
         ItemPedido existingItemPedido = itemDoPedidoRepository.findById(id).orElseThrow(() -> new ItemDoPedidoException(id));
