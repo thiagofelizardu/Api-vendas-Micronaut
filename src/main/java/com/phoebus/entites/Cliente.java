@@ -34,7 +34,7 @@ public class Cliente implements Serializable {
     private String nome;
 
     @NotNull
-    @Column(name = "cpf")
+    @Column(name = "cpf", unique = true)
     @Size(min = 11, max = 11, message = "CPF deve conter 11 digitos ")
     private String cpf;
 

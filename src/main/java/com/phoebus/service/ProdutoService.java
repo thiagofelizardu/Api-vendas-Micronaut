@@ -19,4 +19,6 @@ public interface ProdutoService {
     void deleteById(@NonNull Long id) throws ProdutoException;
 
     ProdutoDTO updateProduto(@NonNull Long id, ProdutoDTO produtoDTO) throws ProdutoException;
+
+    void uploadProdutoMinIO(ProdutoDTO produto);
 }

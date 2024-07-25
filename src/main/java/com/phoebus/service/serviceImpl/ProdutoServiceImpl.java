@@ -4,6 +4,7 @@ import com.phoebus.entites.DTO.ProdutoDTO;
 import com.phoebus.entites.Produto;
 import com.phoebus.exception.ProdutoException;
 import com.phoebus.repository.ProdutoRepository;
+import com.phoebus.s3.S3Service;
 import com.phoebus.service.ProdutoService;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Inject;
@@ -19,6 +20,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Inject
     private final ProdutoRepository produtoRepository;
+
+    @Inject
+    private final S3Service s3Service;
 
     public List<ProdutoDTO> listAll() {
         List<Produto> produtos = produtoRepository.findAll();
@@ -73,6 +77,20 @@ public class ProdutoServiceImpl implements ProdutoService {
             return ProdutoDTO.convertProdutoDTO(updatedProduto);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar o produto: " + e.getMessage());
+        }
+    }
+
+
+    public void uploadProdutoMinIO(ProdutoDTO produtoDTO) {
+        try {
+            Long id = produtoDTO.getId();
+            Produto produto = new Produto();
+            produto.setNome(produtoDTO.getNome());
+            produto.setPreco(produtoDTO.getPreco());
+            String key = String.valueOf(id);
+            s3Service.put(key, produto);
+        } catch (Exception e) {
+            throw new RuntimeException("Falha ao fazer upload do produto: " + e.getMessage());
         }
     }
 }

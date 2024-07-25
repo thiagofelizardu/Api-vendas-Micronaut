@@ -30,6 +30,7 @@
             <column name="preco" type="DECIMAL(10, 2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="foto" type="BLOB"/>
         </createTable>
     </changeSet>
 

@@ -31,6 +31,25 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-inject</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micronaut.objectstorage</groupId>
+      <artifactId>micronaut-object-storage-aws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>br.com.phoebus</groupId>
+      <artifactId>micronaut-object-storage-minio</artifactId>
+      <version>2.0.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut.objectstorage</groupId>
+      <artifactId>micronaut-object-storage-core</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.liquibase</groupId>
@@ -42,16 +61,12 @@
       <artifactId>liquibase-postgresql</artifactId>
       <version>4.20.0</version>
     </dependency>
-
-
-
     <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>2.2.224</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -68,34 +83,15 @@
     <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
-      <version>2.2</version>
+      <scope>runtime</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.micronaut/micronaut-inject -->
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-inject</artifactId>
-      <version>4.4.6</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/io.micronaut.data/micronaut-data-hibernate-jpa -->
     <dependency>
       <groupId>io.micronaut.data</groupId>
       <artifactId>micronaut-data-hibernate-jpa</artifactId>
       <version>4.7.0</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-database-postgresql</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.micronaut.flyway</groupId>
-      <artifactId>micronaut-flyway</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -108,11 +104,6 @@
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-http-server-netty</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.micronaut.data</groupId>
-      <artifactId>micronaut-data-document-processor</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
