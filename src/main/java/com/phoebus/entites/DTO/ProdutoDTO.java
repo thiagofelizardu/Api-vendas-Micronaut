@@ -1,6 +1,6 @@
 package com.phoebus.entites.DTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.phoebus.entites.Produto;
 
 import io.micronaut.core.annotation.Creator;
@@ -24,6 +24,7 @@ public class ProdutoDTO  implements Serializable {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
+
     }
 
     public static ProdutoDTO convertProdutoDTO(Produto produto) {

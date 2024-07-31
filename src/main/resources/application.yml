@@ -3,6 +3,9 @@ micronaut:
     name: estudosMicronaut
   server:
     port: 9090
+  multipart:
+    enabled: true
+
 
 liquibase:
   datasources:
