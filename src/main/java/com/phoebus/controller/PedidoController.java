@@ -5,6 +5,8 @@ import com.phoebus.exception.ClientException;
 import com.phoebus.exception.PedidoException;
 import com.phoebus.exception.ProdutoException;
 import com.phoebus.service.PedidoService;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
@@ -24,8 +26,8 @@ public class PedidoController {
 
     @Get("/")
     @Status(HttpStatus.OK)
-    public List<PedidoDTO> pedidoList(){
-        return pedidoService.listAll();
+    public Page<PedidoDTO> pedidoList(Pageable pageable){
+        return pedidoService.listAll(pageable);
     }
 
     @Post("/Client/{idCliente}")

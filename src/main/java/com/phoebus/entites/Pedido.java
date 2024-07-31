@@ -2,12 +2,16 @@ package com.phoebus.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "tb_pedido")
+@Getter
+@Setter
 @RequiredArgsConstructor
 public class Pedido implements Serializable {
 
@@ -27,28 +31,7 @@ public class Pedido implements Serializable {
     @JsonIgnore
     private List<ItemPedido> itensPedido;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Cliente getClient() {
-        return client;
-    }
-
-    public void setClient(Cliente client) {
-        this.client = client;
-    }
-
-    public List<ItemPedido> getItensPedido() {
-        return itensPedido;
-    }
-
-    public void setItensPedido(List<ItemPedido> itensPedidos) {
-        this.itensPedido = itensPedidos;
-    }
+    @Column(name = "valorTotal")
+    private Double valorTotal;
 
 }

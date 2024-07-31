@@ -13,6 +13,8 @@ import com.phoebus.repository.ClientRepository;
 import com.phoebus.repository.PedidoRepository;
 import com.phoebus.repository.ProdutoRepository;
 import com.phoebus.service.PedidoService;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
@@ -33,11 +35,9 @@ public class PedidoServiceImpl implements PedidoService {
     @Inject
     private final ProdutoRepository produtoRepository;
 
-    public List<PedidoDTO> listAll() {
-        List<Pedido> pedidos = pedidoRepository.findAll();
-        return pedidos.stream()
-                .map(PedidoDTO::convertPedidoDTO)
-                .collect(Collectors.toList());
+    public Page<PedidoDTO> listAll(Pageable pageable) {
+        Page<Pedido> pedidos = pedidoRepository.findAll(pageable);
+        return pedidos.map(PedidoDTO::convertPedidoDTO);
     }
 
     public PedidoDTO save(Long idCliente, PedidoDTO pedidoDTO) throws ClientException, ProdutoException {
