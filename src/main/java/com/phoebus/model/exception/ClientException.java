@@ -1,4 +1,4 @@
-package com.phoebus.exception;
+package com.phoebus.model.exception;
 
 public class ClientException extends Exception{
     public ClientException(Long id) {

@@ -1,7 +1,7 @@
 package com.phoebus.controller;
 
-import com.phoebus.entites.DTO.ClienteDTO;
-import com.phoebus.exception.ClientException;
+import com.phoebus.model.entites.DTO.ClientDTO;
+import com.phoebus.model.exception.ClientException;
 import com.phoebus.service.ClientService;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
@@ -29,26 +29,26 @@ public class ClientController {
 
     @Get("/")
     @Status(HttpStatus.OK)
-    public Page<ClienteDTO> listAll(Pageable pageable) throws ClientException {
+    public Page<ClientDTO> listAll(Pageable pageable) throws ClientException {
         return clientService.listAll(pageable);
     }
 
     @Post
     @Status(HttpStatus.CREATED)
-    public ClienteDTO clientSaved(@Body ClienteDTO client){
+    public ClientDTO clientSaved(@Body ClientDTO client){
         return clientService.save(client);
     }
 
     @Get("/{id}")
     @Status(HttpStatus.OK)
-    public ClienteDTO clientFindById(@PathVariable Long id) throws ClientException {
+    public ClientDTO clientFindById(@PathVariable Long id) throws ClientException {
         return clientService.findById(id);
     }
 
     @Put("/{id}")
     @Status(HttpStatus.OK)
-    public ClienteDTO clientUpdate(@PathVariable Long id, @Body ClienteDTO clienteDTO) throws ClientException {
-        return clientService.update(id, clienteDTO);
+    public ClientDTO clientUpdate(@PathVariable Long id, @Body ClientDTO clientDTO) throws ClientException {
+        return clientService.update(id, clientDTO);
     }
 
     @Delete("delete/{id}")

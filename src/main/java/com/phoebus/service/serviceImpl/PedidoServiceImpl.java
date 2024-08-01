@@ -1,14 +1,14 @@
 package com.phoebus.service.serviceImpl;
 
-import com.phoebus.entites.Cliente;
-import com.phoebus.entites.DTO.ItemDoPedidoDTO;
-import com.phoebus.entites.DTO.PedidoDTO;
-import com.phoebus.entites.ItemPedido;
-import com.phoebus.entites.Pedido;
-import com.phoebus.entites.Produto;
-import com.phoebus.exception.ClientException;
-import com.phoebus.exception.PedidoException;
-import com.phoebus.exception.ProdutoException;
+import com.phoebus.model.entites.Client;
+import com.phoebus.model.entites.DTO.OrderItemDTO;
+import com.phoebus.model.entites.DTO.OrderDTO;
+import com.phoebus.model.entites.OrderItem;
+import com.phoebus.model.entites.Order;
+import com.phoebus.model.entites.Product;
+import com.phoebus.model.exception.ClientException;
+import com.phoebus.model.exception.PedidoException;
+import com.phoebus.model.exception.ProdutoException;
 import com.phoebus.repository.ClientRepository;
 import com.phoebus.repository.PedidoRepository;
 import com.phoebus.repository.ProdutoRepository;
@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Singleton
 @RequiredArgsConstructor
@@ -35,54 +34,54 @@ public class PedidoServiceImpl implements PedidoService {
     @Inject
     private final ProdutoRepository produtoRepository;
 
-    public Page<PedidoDTO> listAll(Pageable pageable) {
-        Page<Pedido> pedidos = pedidoRepository.findAll(pageable);
-        return pedidos.map(PedidoDTO::convertPedidoDTO);
+    public Page<OrderDTO> listAll(Pageable pageable) {
+        Page<Order> pedidos = pedidoRepository.findAll(pageable);
+        return pedidos.map(OrderDTO::convertPedidoDTO);
     }
 
-    public PedidoDTO save(Long idCliente, PedidoDTO pedidoDTO) throws ClientException, ProdutoException {
-        Cliente existingCliente = clientRepository.findById(idCliente)
+    public OrderDTO save(Long idCliente, OrderDTO orderDTO) throws ClientException, ProdutoException {
+        Client existingClient = clientRepository.findById(idCliente)
                 .orElseThrow(() -> new ClientException(idCliente));
 
-        Pedido pedido = new Pedido();
-        pedido.setClient(existingCliente);
+        Order order = new Order();
+        order.setClient(existingClient);
 
-        List<ItemPedido> itensPedido = new ArrayList<>();
-        for (ItemDoPedidoDTO itemDoPedidoDTO : pedidoDTO.getItensPedido()) {
-            Produto produto = produtoRepository.findById(itemDoPedidoDTO.getProdutoId())
-                    .orElseThrow(() -> new ProdutoException(itemDoPedidoDTO.getProdutoId()));
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (OrderItemDTO orderItemDTO : orderDTO.getOrderItem()) {
+            Product product = produtoRepository.findById(orderItemDTO.getProdutoId())
+                    .orElseThrow(() -> new ProdutoException(orderItemDTO.getProdutoId()));
 
-            ItemPedido itemPedido = new ItemPedido();
-            itemPedido.setPedido(pedido);
-            itemPedido.setProduto(produto);
-            itemPedido.setQuantidade(itemDoPedidoDTO.getQuantidade());
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setProduct(product);
+            orderItem.setQuantity(orderItemDTO.getQuantity());
 
-            itensPedido.add(itemPedido);
+            orderItems.add(orderItem);
         }
-        pedido.setItensPedido(itensPedido);
+        order.setOrderItems(orderItems);
 
         try {
-            Pedido savedPedido = pedidoRepository.save(pedido);
-            return PedidoDTO.convertPedidoDTO(savedPedido);
+            Order savedOrder = pedidoRepository.save(order);
+            return OrderDTO.convertPedidoDTO(savedOrder);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o pedido: " + e.getMessage());
         }
 
     }
-    public PedidoDTO findById(Long id) throws PedidoException {
-        Pedido existingPedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
-        return PedidoDTO.convertPedidoDTO(existingPedido);
+    public OrderDTO findById(Long id) throws PedidoException {
+        Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
+        return OrderDTO.convertPedidoDTO(existingOrder);
     }
 
     public void deleteById(Long id) throws PedidoException {
-        Pedido existingPedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
-        pedidoRepository.deleteById(existingPedido.getId());
+        Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
+        pedidoRepository.deleteById(existingOrder.getId());
     }
 
     @Transactional
-    public PedidoDTO updatePedido(Long id, PedidoDTO pedidoDTO) throws PedidoException {
-        Pedido existingPedido = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
-        Pedido updatedPedido = pedidoRepository.save(existingPedido);
-        return PedidoDTO.convertPedidoDTO(updatedPedido);
+    public OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws PedidoException {
+        Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
+        Order updatedOrder = pedidoRepository.save(existingOrder);
+        return OrderDTO.convertPedidoDTO(updatedOrder);
     }
 }

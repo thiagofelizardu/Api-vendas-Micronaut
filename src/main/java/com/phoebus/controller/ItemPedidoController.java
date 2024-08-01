@@ -1,8 +1,8 @@
 package com.phoebus.controller;
 
-import com.phoebus.entites.DTO.ItemDoPedidoDTO;
-import com.phoebus.exception.ItemDoPedidoException;
-import com.phoebus.exception.ProdutoException;
+import com.phoebus.model.entites.DTO.OrderItemDTO;
+import com.phoebus.model.exception.ItemDoPedidoException;
+import com.phoebus.model.exception.ProdutoException;
 import com.phoebus.service.ItemDoPedidoService;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
@@ -26,7 +26,7 @@ public class ItemPedidoController {
     }
 
     @Put("/{id}")
-    public ItemDoPedidoDTO updateItemDoPedido(Long id, ItemDoPedidoDTO itemDoPedidoDTO) throws ItemDoPedidoException, ProdutoException {
-        return itemDoPedidoService.updateItemPedido(id,itemDoPedidoDTO);
+    public OrderItemDTO updateItemDoPedido(Long id, OrderItemDTO orderItemDTO) throws ItemDoPedidoException, ProdutoException {
+        return itemDoPedidoService.updateItemPedido(id, orderItemDTO);
     }
 }

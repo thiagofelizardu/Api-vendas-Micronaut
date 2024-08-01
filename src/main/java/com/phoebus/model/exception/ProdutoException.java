@@ -1,4 +1,4 @@
-package com.phoebus.exception;
+package com.phoebus.model.exception;
 
 public class ProdutoException extends Exception {
 

@@ -1,7 +1,6 @@
-package com.phoebus.entites.DTO;
+package com.phoebus.model.entites.DTO;
 
-
-import com.phoebus.entites.Produto;
+import com.phoebus.model.entites.Product;
 
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.serde.annotation.Serdeable;
@@ -11,7 +10,7 @@ import java.io.Serializable;
 
 @Serdeable
 @Data
-public class ProdutoDTO  implements Serializable {
+public class ProductDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long id;
@@ -20,18 +19,18 @@ public class ProdutoDTO  implements Serializable {
 
 
     @Creator
-    public ProdutoDTO(Long id, String nome, Double preco) {
+    public ProductDTO(Long id, String nome, Double preco) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
 
     }
 
-    public static ProdutoDTO convertProdutoDTO(Produto produto) {
-        return new ProdutoDTO(
-                produto.getId(),
-                produto.getNome(),
-                produto.getPreco()
+    public static ProductDTO convertProductDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getPrice()
         );
     }
 

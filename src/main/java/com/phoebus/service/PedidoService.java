@@ -1,25 +1,22 @@
 package com.phoebus.service;
 
-import com.phoebus.entites.DTO.PedidoDTO;
+import com.phoebus.model.entites.DTO.OrderDTO;
 
-import com.phoebus.exception.ClientException;
-import com.phoebus.exception.PedidoException;
-import com.phoebus.exception.ProdutoException;
+import com.phoebus.model.exception.ClientException;
+import com.phoebus.model.exception.PedidoException;
+import com.phoebus.model.exception.ProdutoException;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 
-
-import java.util.List;
-
 public interface PedidoService {
 
-    Page<PedidoDTO> listAll(Pageable pageable);
+    Page<OrderDTO> listAll(Pageable pageable);
 
-    PedidoDTO save(Long idCliente, PedidoDTO pedidoDTO) throws ClientException, ProdutoException;
+    OrderDTO save(Long idCliente, OrderDTO orderDTO) throws ClientException, ProdutoException;
 
-    PedidoDTO findById(Long id) throws PedidoException ;
+    OrderDTO findById(Long id) throws PedidoException ;
 
     void deleteById (Long id) throws PedidoException;
 
-    PedidoDTO updatePedido(Long id, PedidoDTO pedidoDTO) throws PedidoException;
+    OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws PedidoException;
 }

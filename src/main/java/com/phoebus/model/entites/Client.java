@@ -1,4 +1,4 @@
-package com.phoebus.entites;
+package com.phoebus.model.entites;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,14 +13,20 @@ import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "tb_client")
-@RequiredArgsConstructor
-public class Cliente implements Serializable {
+public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,8 +36,8 @@ public class Cliente implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "nome")
-    private String nome;
+    @Column(name = "name")
+    private String name;
 
     @NotNull
     @Column(name = "cpf", unique = true)
@@ -40,61 +46,14 @@ public class Cliente implements Serializable {
 
     @NotNull
     @Positive
-    @Column(name = "idade")
-    private Long idade;
+    @Column(name = "age")
+    private Long age;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "endereco_id", nullable = false)
-    private Endereco endereco;
+    private Address address;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
-    private List<Pedido> pedidos;
+    private List<Order> orders;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public Long getIdade() {
-        return idade;
-    }
-
-    public void setIdade(Long age) {
-        this.idade = age;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
 }

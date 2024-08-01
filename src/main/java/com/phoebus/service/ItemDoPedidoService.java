@@ -1,13 +1,13 @@
 package com.phoebus.service;
 
-import com.phoebus.entites.DTO.ItemDoPedidoDTO;
-import com.phoebus.exception.ItemDoPedidoException;
-import com.phoebus.exception.ProdutoException;
+import com.phoebus.model.entites.DTO.OrderItemDTO;
+import com.phoebus.model.exception.ItemDoPedidoException;
+import com.phoebus.model.exception.ProdutoException;
 
 
 public interface ItemDoPedidoService {
 
     void deletById(Long id) throws ItemDoPedidoException;
 
-    ItemDoPedidoDTO updateItemPedido(Long id, ItemDoPedidoDTO itemDoPedidoDTO) throws ItemDoPedidoException, ProdutoException;
+    OrderItemDTO updateItemPedido(Long id, OrderItemDTO orderItemDTO) throws ItemDoPedidoException, ProdutoException;
 }

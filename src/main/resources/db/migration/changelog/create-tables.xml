@@ -6,31 +6,31 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="2" author="thiago">
-        <createTable tableName="tb_endereco" schemaName="EstudosMicronaut">
+        <createTable tableName="tb_address" schemaName="EstudosMicronaut">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="logradouro" type="VARCHAR(255)">
+            <column name="street" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="cidade" type="VARCHAR(255)">
+            <column name="city" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="3" author="thiago">
-        <createTable tableName="tb_produto" schemaName="EstudosMicronaut">
+        <createTable tableName="tb_product" schemaName="EstudosMicronaut">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="nome" type="VARCHAR(255)">
+            <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="preco" type="DECIMAL(10, 2)">
+            <column name="price" type="DECIMAL(10, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="foto" type="BLOB"/>
+            <column name="photo" type="BLOB"/>
         </createTable>
     </changeSet>
 
@@ -48,57 +48,60 @@
             <column name="age" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="endereco_id" type="BIGINT">
+            <column name="address_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="tb_client"
-                                 baseColumnNames="endereco_id"
-                                 constraintName="fk_client_endereco"
-                                 referencedTableName="tb_endereco"
+                                 baseColumnNames="address_id"
+                                 constraintName="fk_client_address"
+                                 referencedTableName="tb_address"
                                  referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="5" author="thiago">
-        <createTable tableName="tb_pedido" schemaName="EstudosMicronaut">
+        <createTable tableName="tb_order" schemaName="EstudosMicronaut">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="cliente_id" type="BIGINT">
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(10, 2)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="tb_pedido"
-                                 baseColumnNames="cliente_id"
-                                 constraintName="fk_pedido_cliente"
+        <addForeignKeyConstraint baseTableName="tb_order"
+                                 baseColumnNames="client_id"
+                                 constraintName="fk_order_client"
                                  referencedTableName="tb_client"
                                  referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="6" author="thiago">
-        <createTable tableName="tb_item_pedido" schemaName="EstudosMicronaut">
+        <createTable tableName="tb_order_item" schemaName="EstudosMicronaut">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="pedido_id" type="BIGINT">
+            <column name="order_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="produto_id" type="BIGINT">
+            <column name="product_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="quantidade" type="BIGINT">
+            <column name="quantity" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="tb_item_pedido"
-                                 baseColumnNames="pedido_id"
-                                 constraintName="fk_itempedido_pedido"
-                                 referencedTableName="tb_pedido"
+        <addForeignKeyConstraint baseTableName="tb_order_item"
+                                 baseColumnNames="order_id"
+                                 constraintName="fk_orderitem_order"
+                                 referencedTableName="tb_order"
                                  referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="tb_item_pedido"
-                                 baseColumnNames="produto_id"
-                                 constraintName="fk_itempedido_produto"
-                                 referencedTableName="tb_produto"
+        <addForeignKeyConstraint baseTableName="tb_order_item"
+                                 baseColumnNames="product_id"
+                                 constraintName="fk_orderitem_product"
+                                 referencedTableName="tb_product"
                                  referencedColumnNames="id"/>
     </changeSet>
 

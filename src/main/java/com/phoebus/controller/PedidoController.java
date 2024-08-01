@@ -1,9 +1,9 @@
 package com.phoebus.controller;
 
-import com.phoebus.entites.DTO.PedidoDTO;
-import com.phoebus.exception.ClientException;
-import com.phoebus.exception.PedidoException;
-import com.phoebus.exception.ProdutoException;
+import com.phoebus.model.entites.DTO.OrderDTO;
+import com.phoebus.model.exception.ClientException;
+import com.phoebus.model.exception.PedidoException;
+import com.phoebus.model.exception.ProdutoException;
 import com.phoebus.service.PedidoService;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
@@ -13,8 +13,6 @@ import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @Controller("/pedido")
 @ExecuteOn(TaskExecutors.IO)
@@ -26,19 +24,19 @@ public class PedidoController {
 
     @Get("/")
     @Status(HttpStatus.OK)
-    public Page<PedidoDTO> pedidoList(Pageable pageable){
+    public Page<OrderDTO> pedidoList(Pageable pageable){
         return pedidoService.listAll(pageable);
     }
 
     @Post("/Client/{idCliente}")
     @Status(HttpStatus.CREATED)
-    public PedidoDTO save(@PathVariable Long idCliente ,@Body PedidoDTO pedidoDTO) throws ClientException, ProdutoException {
-        return pedidoService.save(idCliente,pedidoDTO);
+    public OrderDTO save(@PathVariable Long idCliente , @Body OrderDTO orderDTO) throws ClientException, ProdutoException {
+        return pedidoService.save(idCliente, orderDTO);
     }
 
     @Get("/{id}")
     @Status(HttpStatus.OK)
-    public PedidoDTO pedidoFindById(@PathVariable Long id)throws PedidoException {
+    public OrderDTO pedidoFindById(@PathVariable Long id)throws PedidoException {
         return pedidoService.findById(id);
     }
 
@@ -50,7 +48,7 @@ public class PedidoController {
 
     @Put("/{id}")
     @Status(HttpStatus.OK)
-    public PedidoDTO pedidoUpdate(@PathVariable Long id, @Body PedidoDTO pedido) throws PedidoException {
+    public OrderDTO pedidoUpdate(@PathVariable Long id, @Body OrderDTO pedido) throws PedidoException {
         return pedidoService.updatePedido(id,pedido);
     }
 

@@ -16,7 +16,7 @@ liquibase:
 # Data Source Configuration
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/EstudosMicro
+    url: jdbc:postgresql://localhost:5432/EstudosMicronaut
     driverClassName: org.postgresql.Driver
     username: postgres
     password: 123456
@@ -29,19 +29,21 @@ datasources:
       max-lifetime: 1800000 # Tempo máximo de vida útil para uma conexão no pool (em milissegundos).
       connection-timeout: 30000 #Tempo máximo que o HikariCP espera para obter uma conexão do pool (em milissegundos).
       pool-name: MeuHikariPool # Nome do pool de conexões.
-
+    logging:
+      level: DEBUG # Define o nível de logging para o datasource
 
 jpa:
   default:
     properties:
       hibernate:
         hbm2ddl:
-          auto: update
-        default_schema: public
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
+          auto: update           # Define o comportamento de geração do esquema de banco de dados.
+        default_schema: public   # Define o esquema padrão a ser usado pelo Hibernate.
+        show_sql: true           # Habilita a exibição das instruções SQL geradas no console.
+        format_sql: true         # Habilita a formatação das instruções SQL exibidas no console.
+        use_sql_comments: true   # Habilita o uso de comentários nas instruções SQL para ajudar na depuração.
+        jdbc.lob.non_contextual_creation: true            # Necessário para suporte a LOB no PostgreSQL.
     packages-to-scan:
-      - 'com.phoebus'
+      - 'com.phoebus.model'            # Define os pacotes que devem ser escaneados para encontrar entidades JPA.
     entity-scan:
-      packages: 'com.phoebus.entites'
+      packages: 'com.phoebus.model.entites'  # Define os pacotes que contêm entidades JPA para serem escaneadas.

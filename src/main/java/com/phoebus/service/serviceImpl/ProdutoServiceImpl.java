@@ -1,10 +1,9 @@
 package com.phoebus.service.serviceImpl;
 
-import com.phoebus.entites.DTO.ProdutoDTO;
-import com.phoebus.entites.Produto;
-import com.phoebus.exception.ProdutoException;
+import com.phoebus.model.entites.DTO.ProductDTO;
+import com.phoebus.model.entites.Product;
+import com.phoebus.model.exception.ProdutoException;
 import com.phoebus.repository.ProdutoRepository;
-import com.phoebus.s3.S3Service;
 import com.phoebus.service.ProdutoService;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Inject;
@@ -21,45 +20,42 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Inject
     private final ProdutoRepository produtoRepository;
 
-    @Inject
-    private final S3Service s3Service;
-
-    public List<ProdutoDTO> listAll() {
-        List<Produto> produtos = produtoRepository.findAll();
-        return produtos.stream()
-                .map(ProdutoDTO::convertProdutoDTO)
+    public List<ProductDTO> listAll() {
+        List<Product> products = produtoRepository.findAll();
+        return products.stream()
+                .map(ProductDTO::convertProductDTO)
                 .collect(Collectors.toList());
     }
 
 
-    public ProdutoDTO saveProduto( ProdutoDTO produtoDTO) throws ProdutoException {
-        if (produtoRepository.findByNome(produtoDTO.getNome()).isPresent()) {
-            throw new ProdutoException(produtoDTO.getNome());
+    public ProductDTO saveProduto(ProductDTO productDTO) throws ProdutoException {
+        if (produtoRepository.findByName(productDTO.getNome()).isPresent()) {
+            throw new ProdutoException(productDTO.getNome());
         }
-        Produto produto = new Produto();
-        produto.setNome(produtoDTO.getNome());
-        produto.setPreco(produtoDTO.getPreco());
+        Product product = new Product();
+        product.setName(productDTO.getNome());
+        product.setPrice(productDTO.getPreco());
         try {
-            produto = produtoRepository.save(produto);
-            return ProdutoDTO.convertProdutoDTO(produto);
+            product = produtoRepository.save(product);
+            return ProductDTO.convertProductDTO(product);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o produto: " + e.getMessage());
         }
     }
 
 
-    public ProdutoDTO findById(@NonNull Long id) throws ProdutoException {
-        Produto existingProduto = produtoRepository.findById(id)
+    public ProductDTO findById(@NonNull Long id) throws ProdutoException {
+        Product existingProduct = produtoRepository.findById(id)
                 .orElseThrow(() -> new ProdutoException(id));
-        return ProdutoDTO.convertProdutoDTO(existingProduto);
+        return ProductDTO.convertProductDTO(existingProduct);
     }
 
 
-//    public ProdutoDTO findByNome(String nome) throws ProdutoException {
-//        Produto existingProduto = produtoRepository.findByNome(nome)
-//                .orElseThrow(() -> new ProdutoException(nome));
-//        return ProdutoDTO.convertProdutoDTO(existingProduto);
-//    }
+    public ProductDTO findByNome(String name) throws ProdutoException {
+        Product existingProduct = produtoRepository.findByName(name)
+                .orElseThrow(() -> new ProdutoException(name));
+        return ProductDTO.convertProductDTO(existingProduct);
+    }
 
     public void deleteById(Long id) throws ProdutoException {
         produtoRepository.findById(id)
@@ -67,31 +63,18 @@ public class ProdutoServiceImpl implements ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-    public ProdutoDTO updateProduto(Long id, ProdutoDTO produtoDTO) throws ProdutoException {
-        Produto existingProduto = produtoRepository.findById(id)
+    public ProductDTO updateProduto(Long id, ProductDTO productDTO) throws ProdutoException {
+        Product existingProduct = produtoRepository.findById(id)
                 .orElseThrow(() -> new ProdutoException(id));
-        existingProduto.setNome(produtoDTO.getNome());
-        existingProduto.setPreco(produtoDTO.getPreco());
+        existingProduct.setName(productDTO.getNome());
+        existingProduct.setPrice(productDTO.getPreco());
         try {
-            Produto updatedProduto = produtoRepository.save(existingProduto);
-            return ProdutoDTO.convertProdutoDTO(updatedProduto);
+            Product updatedProduct = produtoRepository.save(existingProduct);
+            return ProductDTO.convertProductDTO(updatedProduct);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar o produto: " + e.getMessage());
         }
     }
 
-
-    public void uploadProdutoMinIO(ProdutoDTO produtoDTO) {
-        try {
-            Long id = produtoDTO.getId();
-            Produto produto = new Produto();
-            produto.setNome(produtoDTO.getNome());
-            produto.setPreco(produtoDTO.getPreco());
-            String key = String.valueOf(id);
-            s3Service.put(key, produto);
-        } catch (Exception e) {
-            throw new RuntimeException("Falha ao fazer upload do produto: " + e.getMessage());
-        }
-    }
 }
 

@@ -1,10 +1,10 @@
 package com.phoebus.service.serviceImpl;
 
-import com.phoebus.entites.Cliente;
-import com.phoebus.entites.DTO.ClienteDTO;
-import com.phoebus.entites.DTO.EnderecoDTO;
-import com.phoebus.entites.Endereco;
-import com.phoebus.exception.ClientException;
+import com.phoebus.model.entites.Client;
+import com.phoebus.model.entites.DTO.ClientDTO;
+import com.phoebus.model.entites.DTO.AddressDTO;
+import com.phoebus.model.entites.Address;
+import com.phoebus.model.exception.ClientException;
 import com.phoebus.repository.ClientRepository;
 import com.phoebus.service.ClientService;
 import io.micronaut.core.annotation.NonNull;
@@ -19,47 +19,48 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
+
     @Inject
     private final ClientRepository clienteRepository;
 
-    public Page<ClienteDTO> listAll(Pageable pageable) {
-        Page<Cliente> clientesPage = clienteRepository.findAll(pageable);
-        return clientesPage.map(ClienteDTO::convertClienteDTO);
+    public Page<ClientDTO> listAll(Pageable pageable) {
+        Page<Client> clientesPage = clienteRepository.findAll(pageable);
+        return clientesPage.map(ClientDTO::convertClienteDTO);
     }
 
-    public ClienteDTO save(ClienteDTO client) {
-        Cliente cliente = new Cliente();
-        cliente.setNome(client.getNome());
+    public ClientDTO save(ClientDTO client) {
+        Client cliente = new Client();
+        cliente.setName(client.getName());
         cliente.setCpf(client.getCpf());
-        cliente.setIdade(client.getIdade());
-        Endereco endereco = EnderecoDTO.convertToEndereco(client.getEndereco());
-        cliente.setEndereco(endereco);
+        cliente.setAge(client.getAge());
+        Address address = AddressDTO.convertDTOToAddress(client.getAddress());
+        cliente.setAddress(address);
         try {
             cliente = clienteRepository.save(cliente);
-            return ClienteDTO.convertClienteDTO(cliente);
+            return ClientDTO.convertClienteDTO(cliente);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o cliente: " + e.getMessage());
         }
     }
 
-    public ClienteDTO findById(@NonNull Long id) throws ClientException {
-        Cliente client = clienteRepository.findById(id)
+    public ClientDTO findById(@NonNull Long id) throws ClientException {
+        Client client = clienteRepository.findById(id)
                 .orElseThrow(() -> new ClientException(id));
-        return ClienteDTO.convertClienteDTO(client);
+        return ClientDTO.convertClienteDTO(client);
     }
 
     @Transactional
-    public ClienteDTO update(@NonNull Long id, ClienteDTO client) throws ClientException {
-        Cliente existingClient = clienteRepository.findById(id)
+    public ClientDTO update(@NonNull Long id, ClientDTO client) throws ClientException {
+        Client existingClient = clienteRepository.findById(id)
                 .orElseThrow(() ->new ClientException(id));
-        existingClient.setNome(client.getNome());
+        existingClient.setName(client.getName());
         existingClient.setCpf(client.getCpf());
-        existingClient.setIdade(client.getIdade());
-        Endereco endereco = EnderecoDTO.convertToEndereco(client.getEndereco());
-        existingClient.setEndereco(endereco);
+        existingClient.setAge(client.getAge());
+        Address address = AddressDTO.convertDTOToAddress(client.getAddress());
+        existingClient.setAddress(address);
         try {
-            Cliente updatedClient = clienteRepository.save(existingClient);
-            return ClienteDTO.convertClienteDTO(updatedClient);
+            Client updatedClient = clienteRepository.save(existingClient);
+            return ClientDTO.convertClienteDTO(updatedClient);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar o cliente: " + e.getMessage());
         }
