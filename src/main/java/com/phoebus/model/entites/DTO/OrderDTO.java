@@ -29,7 +29,7 @@ public class OrderDTO implements Serializable {
         this.amount = amount;
     }
 
-    public static OrderDTO convertPedidoDTO(Order order) {
+    public static OrderDTO convertOrderDTO(Order order) {
         List<OrderItemDTO> itensPedido = order.getOrderItems().stream()
                 .map(OrderItemDTO::convertOrderItemDTO)
                 .collect(Collectors.toList());

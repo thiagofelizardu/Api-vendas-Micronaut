@@ -28,7 +28,7 @@ public class ClientDTO implements Serializable {
         this.address = address;
     }
 
-    public static ClientDTO convertClienteDTO(Client client){
+    public static ClientDTO convertClientDTO(Client client){
         return new ClientDTO(
                 client.getId(),
                 client.getName(),

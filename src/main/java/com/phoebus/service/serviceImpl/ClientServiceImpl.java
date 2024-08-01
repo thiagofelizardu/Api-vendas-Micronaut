@@ -25,7 +25,7 @@ public class ClientServiceImpl implements ClientService {
 
     public Page<ClientDTO> listAll(Pageable pageable) {
         Page<Client> clientesPage = clienteRepository.findAll(pageable);
-        return clientesPage.map(ClientDTO::convertClienteDTO);
+        return clientesPage.map(ClientDTO::convertClientDTO);
     }
 
     public ClientDTO save(ClientDTO client) {
@@ -37,7 +37,7 @@ public class ClientServiceImpl implements ClientService {
         cliente.setAddress(address);
         try {
             cliente = clienteRepository.save(cliente);
-            return ClientDTO.convertClienteDTO(cliente);
+            return ClientDTO.convertClientDTO(cliente);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o cliente: " + e.getMessage());
         }
@@ -46,7 +46,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientDTO findById(@NonNull Long id) throws ClientException {
         Client client = clienteRepository.findById(id)
                 .orElseThrow(() -> new ClientException(id));
-        return ClientDTO.convertClienteDTO(client);
+        return ClientDTO.convertClientDTO(client);
     }
 
     @Transactional
@@ -60,7 +60,7 @@ public class ClientServiceImpl implements ClientService {
         existingClient.setAddress(address);
         try {
             Client updatedClient = clienteRepository.save(existingClient);
-            return ClientDTO.convertClienteDTO(updatedClient);
+            return ClientDTO.convertClientDTO(updatedClient);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar o cliente: " + e.getMessage());
         }

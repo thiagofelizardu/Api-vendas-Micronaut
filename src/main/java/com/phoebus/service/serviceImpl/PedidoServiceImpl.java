@@ -36,7 +36,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     public Page<OrderDTO> listAll(Pageable pageable) {
         Page<Order> pedidos = pedidoRepository.findAll(pageable);
-        return pedidos.map(OrderDTO::convertPedidoDTO);
+        return pedidos.map(OrderDTO::convertOrderDTO);
     }
 
     public OrderDTO save(Long idCliente, OrderDTO orderDTO) throws ClientException, ProdutoException {
@@ -62,7 +62,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         try {
             Order savedOrder = pedidoRepository.save(order);
-            return OrderDTO.convertPedidoDTO(savedOrder);
+            return OrderDTO.convertOrderDTO(savedOrder);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o pedido: " + e.getMessage());
         }
@@ -70,7 +70,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
     public OrderDTO findById(Long id) throws PedidoException {
         Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
-        return OrderDTO.convertPedidoDTO(existingOrder);
+        return OrderDTO.convertOrderDTO(existingOrder);
     }
 
     public void deleteById(Long id) throws PedidoException {
@@ -82,6 +82,6 @@ public class PedidoServiceImpl implements PedidoService {
     public OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws PedidoException {
         Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
         Order updatedOrder = pedidoRepository.save(existingOrder);
-        return OrderDTO.convertPedidoDTO(updatedOrder);
+        return OrderDTO.convertOrderDTO(updatedOrder);
     }
 }
