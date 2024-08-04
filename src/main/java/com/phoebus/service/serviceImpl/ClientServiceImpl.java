@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
         cliente.setName(client.getName());
         cliente.setCpf(client.getCpf());
         cliente.setAge(client.getAge());
-        Address address = AddressDTO.convertDTOToAddress(client.getAddress());
+        Address address = setAddress(client.getAddress());
         cliente.setAddress(address);
         try {
             cliente = clienteRepository.save(cliente);
@@ -56,7 +56,7 @@ public class ClientServiceImpl implements ClientService {
         existingClient.setName(client.getName());
         existingClient.setCpf(client.getCpf());
         existingClient.setAge(client.getAge());
-        Address address = AddressDTO.convertDTOToAddress(client.getAddress());
+        Address address = setAddress(client.getAddress());
         existingClient.setAddress(address);
         try {
             Client updatedClient = clienteRepository.save(existingClient);
@@ -66,11 +66,17 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
-
     public void deleteById(Long id)throws ClientException {
         clienteRepository.findById(id)
                 .orElseThrow(()-> new ClientException(id));
         clienteRepository.deleteById(id);
+    }
+
+    public Address setAddress(AddressDTO addressDTO) {
+        Address address = new Address();
+        address.setStreet(addressDTO.getStreet());
+        address.setCity(addressDTO.getCity());
+        return address;
     }
 
 }

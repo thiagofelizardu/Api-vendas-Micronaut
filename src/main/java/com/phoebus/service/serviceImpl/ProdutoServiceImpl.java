@@ -29,12 +29,12 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 
     public ProductDTO saveProduto(ProductDTO productDTO) throws ProdutoException {
-        if (produtoRepository.findByName(productDTO.getNome()).isPresent()) {
-            throw new ProdutoException(productDTO.getNome());
+        if (produtoRepository.findByName(productDTO.getName()).isPresent()) {
+            throw new ProdutoException(productDTO.getName());
         }
         Product product = new Product();
-        product.setName(productDTO.getNome());
-        product.setPrice(productDTO.getPreco());
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
         try {
             product = produtoRepository.save(product);
             return ProductDTO.convertProductDTO(product);
@@ -66,8 +66,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ProductDTO updateProduto(Long id, ProductDTO productDTO) throws ProdutoException {
         Product existingProduct = produtoRepository.findById(id)
                 .orElseThrow(() -> new ProdutoException(id));
-        existingProduct.setName(productDTO.getNome());
-        existingProduct.setPrice(productDTO.getPreco());
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setPrice(productDTO.getPrice());
         try {
             Product updatedProduct = produtoRepository.save(existingProduct);
             return ProductDTO.convertProductDTO(updatedProduct);

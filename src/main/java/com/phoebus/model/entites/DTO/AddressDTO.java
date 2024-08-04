@@ -28,11 +28,4 @@ public class AddressDTO implements Serializable {
                 address.getCity()
         );
     }
-
-    public static Address convertDTOToAddress(AddressDTO addressDTO) {
-        Address address = new Address();
-        address.setStreet(addressDTO.getStreet());
-        address.setCity(addressDTO.getCity());
-        return address;
-    }
 }

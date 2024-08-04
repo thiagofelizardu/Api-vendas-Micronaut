@@ -50,7 +50,7 @@ public class Client implements Serializable {
     private Long age;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "endereco_id", nullable = false)
+    @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")

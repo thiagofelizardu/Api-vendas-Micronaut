@@ -34,16 +34,12 @@ public class OrderDTO implements Serializable {
                 .map(OrderItemDTO::convertOrderItemDTO)
                 .collect(Collectors.toList());
 
-        Double valorTotal = itensPedido.stream()
-                .mapToDouble(item -> item.getPriceProduct() * item.getQuantity())
-                .sum();
-
         return new OrderDTO(
                 order.getId(),
                 order.getClient().getId(),
                 order.getClient().getName(),
                 itensPedido,
-                valorTotal
+                order.getAmount()
         );
     }
 }

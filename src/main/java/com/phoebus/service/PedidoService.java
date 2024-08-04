@@ -18,5 +18,5 @@ public interface PedidoService {
 
     void deleteById (Long id) throws PedidoException;
 
-    OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws PedidoException;
+    OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws PedidoException, ProdutoException;
 }

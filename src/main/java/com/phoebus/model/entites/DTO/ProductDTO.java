@@ -14,15 +14,15 @@ public class ProductDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long id;
-    private String nome;
-    private Double preco;
+    private String name;
+    private Double price;
 
 
     @Creator
-    public ProductDTO(Long id, String nome, Double preco) {
+    public ProductDTO(Long id, String name, Double price) {
         this.id = id;
-        this.nome = nome;
-        this.preco = preco;
+        this.name = name;
+        this.price = price;
 
     }
 

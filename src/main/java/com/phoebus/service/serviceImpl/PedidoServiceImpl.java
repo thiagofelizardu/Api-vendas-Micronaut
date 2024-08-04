@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Singleton
 @RequiredArgsConstructor
@@ -47,6 +48,8 @@ public class PedidoServiceImpl implements PedidoService {
         order.setClient(existingClient);
 
         List<OrderItem> orderItems = new ArrayList<>();
+        Double totalAmount = 0.0;
+
         for (OrderItemDTO orderItemDTO : orderDTO.getOrderItem()) {
             Product product = produtoRepository.findById(orderItemDTO.getProdutoId())
                     .orElseThrow(() -> new ProdutoException(orderItemDTO.getProdutoId()));
@@ -56,18 +59,21 @@ public class PedidoServiceImpl implements PedidoService {
             orderItem.setProduct(product);
             orderItem.setQuantity(orderItemDTO.getQuantity());
 
+            Double itemAmount = product.getPrice() * orderItemDTO.getQuantity();
+            totalAmount += itemAmount;
+
             orderItems.add(orderItem);
         }
         order.setOrderItems(orderItems);
-
+        order.setAmount(totalAmount);
         try {
             Order savedOrder = pedidoRepository.save(order);
             return OrderDTO.convertOrderDTO(savedOrder);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o pedido: " + e.getMessage());
         }
-
     }
+
     public OrderDTO findById(Long id) throws PedidoException {
         Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
         return OrderDTO.convertOrderDTO(existingOrder);
@@ -77,7 +83,7 @@ public class PedidoServiceImpl implements PedidoService {
         Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
         pedidoRepository.deleteById(existingOrder.getId());
     }
-
+    //falta implementar corretamente
     @Transactional
     public OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws PedidoException {
         Order existingOrder = pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(id));
