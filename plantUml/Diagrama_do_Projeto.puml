@@ -1,0 +1,49 @@
+@startuml EntidadesDoProjeto
+    class Client {
+        - Long id 
+        - String name
+        - String cpf 
+        - Long age
+        - Address
+        - List<Order>
+    }
+
+    class Address {
+        - Long id 
+        - String street 
+        - String city 
+    }
+
+    class Order {
+        - Long id 
+        - Client
+        - List<OrderItem>
+        - Double amount 
+    }
+
+    class OrderItem {
+        - Long id 
+        - String name
+        - Order
+        - Product
+    }
+
+    class Product {
+        - Long id 
+        - String name 
+        - Double price 
+        - Long quantity 
+    }
+    
+
+    Client "1" *--> "1" Address 
+
+    Client "0" o--> "*" Order
+
+    Order "1" o--> "*" OrderItem
+
+    OrderItem "*" *--> "1" Product
+
+
+
+@enduml 
