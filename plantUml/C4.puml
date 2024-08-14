@@ -1,8 +1,23 @@
-@startuml C4DoProjeto
+@startuml ModelC4doProjeto
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+
+!include DEVICONS/java.puml
+!include FONTAWESOME/users.puml
+Person(user, "Cliente", "Pessoas que precisam de produtos", $sprite="users")
+
+System_Boundary(c1, "Sample System", $link="https://github.com/plantuml-stdlib/C4-PlantUML") {
+Container(api, "API", "java, Micronaut", "Lida com toda a lógica de negócios", $sprite="java")
+ContainerDb(db, "Database", "PostgreSQL", "Contém informações de produtos, pedidos, endereçoes e clientes")
+}
+
+Rel(user, api, "Uses", "https")
+BiRel_R(api, db, "Reads/Writes")
 
 
-
-
+SHOW_FLOATING_LEGEND()
 
 
 @enduml
