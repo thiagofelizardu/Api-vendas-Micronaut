@@ -3,14 +3,20 @@ package com.phoebus.model.entites.DTO;
 import com.phoebus.model.entites.Client;
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.serde.annotation.Serdeable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Serdeable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -18,15 +24,6 @@ public class ClientDTO implements Serializable {
     private String cpf;
     private Long age;
     private AddressDTO address;
-
-    @Creator
-    public ClientDTO(Long id, String name, String cpf, Long age, AddressDTO address) {
-        this.id = id;
-        this.name = name;
-        this.cpf = cpf;
-        this.age = age;
-        this.address = address;
-    }
 
     public static ClientDTO convertClientDTO(Client client){
         return new ClientDTO(

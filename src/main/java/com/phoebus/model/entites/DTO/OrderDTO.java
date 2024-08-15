@@ -1,17 +1,22 @@
 package com.phoebus.model.entites.DTO;
 
 import com.phoebus.model.entites.Order;
-import io.micronaut.core.annotation.Creator;
 import io.micronaut.serde.annotation.Serdeable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Serdeable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long orderId;
@@ -19,15 +24,6 @@ public class OrderDTO implements Serializable {
     private String nameClient;
     private List<OrderItemDTO> orderItem;
     private Double amount;
-
-    @Creator
-    public OrderDTO(Long orderId, Long clientId, String nameClient, List<OrderItemDTO> orderItem, Double amount) {
-        this.orderId = orderId;
-        this.clientId = clientId;
-        this.nameClient = nameClient;
-        this.orderItem = orderItem;
-        this.amount = amount;
-    }
 
     public static OrderDTO convertOrderDTO(Order order) {
         List<OrderItemDTO> itensPedido = order.getOrderItems().stream()
