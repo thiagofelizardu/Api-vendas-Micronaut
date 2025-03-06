@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
         cliente.setName(client.getName());
         cliente.setCpf(client.getCpf());
         cliente.setAge(client.getAge());
-        Address address = setAddress(client.getAddress());
+        Address address = createAddress(client.getAddress());
         cliente.setAddress(address);
         try {
             cliente = clienteRepository.save(cliente);
@@ -56,7 +56,7 @@ public class ClientServiceImpl implements ClientService {
         existingClient.setName(client.getName());
         existingClient.setCpf(client.getCpf());
         existingClient.setAge(client.getAge());
-        Address address = setAddress(client.getAddress());
+        Address address = createAddress(client.getAddress());
         existingClient.setAddress(address);
         try {
             Client updatedClient = clienteRepository.save(existingClient);
@@ -72,7 +72,7 @@ public class ClientServiceImpl implements ClientService {
         clienteRepository.deleteById(id);
     }
 
-    public Address setAddress(AddressDTO addressDTO) {
+    public Address createAddress(AddressDTO addressDTO) {
         Address address = new Address();
         address.setStreet(addressDTO.getStreet());
         address.setCity(addressDTO.getCity());
