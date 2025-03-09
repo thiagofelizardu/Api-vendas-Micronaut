@@ -53,7 +53,7 @@ public class ClientController {
 
     @Delete("delete/{id}")
     @Status(HttpStatus.OK)
-    public void ClientDeleteById(@PathVariable Long id) throws ClientException {
+    public void clientDeleteById(@PathVariable Long id) throws ClientException {
         clientService.deleteById(id);
     }
 }

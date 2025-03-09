@@ -5,6 +5,7 @@ import com.phoebus.model.entites.DTO.ClientDTO;
 import com.phoebus.model.entites.DTO.AddressDTO;
 import com.phoebus.model.entites.Address;
 import com.phoebus.model.exception.ClientException;
+import com.phoebus.model.utils.EntityFinderUtils;
 import com.phoebus.repository.ClientRepository;
 import com.phoebus.service.ClientService;
 import io.micronaut.core.annotation.NonNull;
@@ -21,10 +22,10 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Inject
-    private final ClientRepository clienteRepository;
+    private final ClientRepository clientRepository;
 
     public Page<ClientDTO> listAll(Pageable pageable) {
-        Page<Client> clientesPage = clienteRepository.findAll(pageable);
+        Page<Client> clientesPage = clientRepository.findAll(pageable);
         return clientesPage.map(ClientDTO::convertClientDTO);
     }
 
@@ -36,7 +37,7 @@ public class ClientServiceImpl implements ClientService {
         Address address = createAddress(client.getAddress());
         cliente.setAddress(address);
         try {
-            cliente = clienteRepository.save(cliente);
+            cliente = clientRepository.save(cliente);
             return ClientDTO.convertClientDTO(cliente);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o cliente: " + e.getMessage());
@@ -44,22 +45,20 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public ClientDTO findById(@NonNull Long id) throws ClientException {
-        Client client = clienteRepository.findById(id)
-                .orElseThrow(() -> new ClientException(id));
-        return ClientDTO.convertClientDTO(client);
+        Client existingClient = EntityFinderUtils.findClientById(clientRepository, id);
+        return ClientDTO.convertClientDTO(existingClient);
     }
 
     @Transactional
     public ClientDTO update(@NonNull Long id, ClientDTO client) throws ClientException {
-        Client existingClient = clienteRepository.findById(id)
-                .orElseThrow(() ->new ClientException(id));
+        Client existingClient = EntityFinderUtils.findClientById(clientRepository, id);
         existingClient.setName(client.getName());
         existingClient.setCpf(client.getCpf());
         existingClient.setAge(client.getAge());
         Address address = createAddress(client.getAddress());
         existingClient.setAddress(address);
         try {
-            Client updatedClient = clienteRepository.save(existingClient);
+            Client updatedClient = clientRepository.save(existingClient);
             return ClientDTO.convertClientDTO(updatedClient);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao atualizar o cliente: " + e.getMessage());
@@ -67,9 +66,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public void deleteById(Long id)throws ClientException {
-        clienteRepository.findById(id)
-                .orElseThrow(()-> new ClientException(id));
-        clienteRepository.deleteById(id);
+        EntityFinderUtils.findClientById(clientRepository, id);
+        clientRepository.deleteById(id);
     }
 
     public Address createAddress(AddressDTO addressDTO) {

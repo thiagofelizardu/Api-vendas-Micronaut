@@ -2,9 +2,9 @@ package com.phoebus.controller;
 
 import com.phoebus.model.entites.DTO.OrderDTO;
 import com.phoebus.model.exception.ClientException;
-import com.phoebus.model.exception.PedidoException;
-import com.phoebus.model.exception.ProdutoException;
-import com.phoebus.service.PedidoService;
+import com.phoebus.model.exception.OrderException;
+import com.phoebus.model.exception.ProductException;
+import com.phoebus.service.OrderService;
 import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpStatus;
@@ -17,10 +17,10 @@ import lombok.RequiredArgsConstructor;
 @Controller("/pedido")
 @ExecuteOn(TaskExecutors.IO)
 @RequiredArgsConstructor
-public class PedidoController {
+public class OrderController {
 
     @Inject
-    private final PedidoService pedidoService;
+    private final OrderService pedidoService;
 
     @Get("/")
     @Status(HttpStatus.OK)
@@ -30,19 +30,19 @@ public class PedidoController {
 
     @Post("/Client/{idCliente}")
     @Status(HttpStatus.CREATED)
-    public OrderDTO save(@PathVariable Long idCliente , @Body OrderDTO orderDTO) throws ClientException, ProdutoException {
+    public OrderDTO save(@PathVariable Long idCliente , @Body OrderDTO orderDTO) throws ClientException, ProductException {
         return pedidoService.save(idCliente, orderDTO);
     }
 
     @Get("/{id}")
     @Status(HttpStatus.OK)
-    public OrderDTO pedidoFindById(@PathVariable Long id)throws PedidoException {
+    public OrderDTO pedidoFindById(@PathVariable Long id)throws OrderException {
         return pedidoService.findById(id);
     }
 
     @Delete("/{id}")
     @Status(HttpStatus.NO_CONTENT)
-    public void pedidoDeleteById(@PathVariable Long id)throws PedidoException {
+    public void pedidoDeleteById(@PathVariable Long id)throws OrderException {
         pedidoService.deleteById(id);
     }
 //

@@ -18,7 +18,7 @@ public class OrderItemDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Long produtoId;
+    private Long productId;
     private String nameProduct;
     private Double priceProduct;
     private Long quantity;

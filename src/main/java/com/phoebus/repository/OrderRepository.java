@@ -1,9 +1,9 @@
 package com.phoebus.repository;
 
-import com.phoebus.model.entites.OrderItem;
+import com.phoebus.model.entites.Order;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface ItemDoPedidoRepository extends JpaRepository<OrderItem,Long> {
+public interface OrderRepository extends JpaRepository<Order,Long> {
 }

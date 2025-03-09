@@ -7,7 +7,7 @@ import io.micronaut.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
 
     Optional<Product> findByName(String name);
 
