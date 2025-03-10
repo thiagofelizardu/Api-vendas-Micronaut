@@ -24,14 +24,14 @@ public class OrderOrderItemServiceImpl implements OrderItemService {
     private final ProductRepository productRepository;
 
     public void deletById(Long id) throws OrderItemException {
-        OrderItem existingOrderItem = EntityFinderUtils.findOrderItem(orderItemRepository, id);
+        OrderItem existingOrderItem = EntityFinderUtils.findOrderItemById(orderItemRepository, id);
         orderItemRepository.deleteById(existingOrderItem.getId());
     }
 
     public OrderItemDTO updateOrderItem(Long id, OrderItemDTO orderItemDTO) throws OrderItemException, ProductException {
-        OrderItem existingOrder = EntityFinderUtils.findOrderItem(orderItemRepository, id);
+        OrderItem existingOrder = EntityFinderUtils.findOrderItemById(orderItemRepository, id);
         existingOrder.setQuantity(orderItemDTO.getQuantity());
-        Product product = EntityFinderUtils.findByName(productRepository,orderItemDTO.getNameProduct());
+        Product product = EntityFinderUtils.findProductByName(productRepository,orderItemDTO.getNameProduct());
         existingOrder.setProduct(product);
 
         try {

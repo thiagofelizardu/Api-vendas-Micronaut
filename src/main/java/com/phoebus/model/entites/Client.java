@@ -49,8 +49,8 @@ public class Client implements Serializable {
     @Column(name = "age")
     private Long age;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "address_id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")

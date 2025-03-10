@@ -9,6 +9,7 @@ import com.phoebus.model.entites.Product;
 import com.phoebus.model.exception.ClientException;
 import com.phoebus.model.exception.OrderException;
 import com.phoebus.model.exception.ProductException;
+import com.phoebus.model.utils.EntityFinderUtils;
 import com.phoebus.repository.ClientRepository;
 import com.phoebus.repository.OrderRepository;
 import com.phoebus.repository.ProductRepository;
@@ -40,9 +41,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderDTO save(Long idCliente, OrderDTO orderDTO) throws ClientException, ProductException {
-        Client existingClient = clientRepository.findById(idCliente)
-                .orElseThrow(() -> new ClientException(idCliente));
-
+        Client existingClient = EntityFinderUtils.findClientById(clientRepository, idCliente);
         Order order = new Order();
         order.setClient(existingClient);
 
@@ -50,9 +49,7 @@ public class OrderServiceImpl implements OrderService {
         double totalAmount = 0.0;
 
         for (OrderItemDTO orderItemDTO : orderDTO.getOrderItem()) {
-            Product product = productRepository.findById(orderItemDTO.getProductId())
-                    .orElseThrow(() -> new ProductException(orderItemDTO.getProductId()));
-
+            Product product = EntityFinderUtils.findProductById(productRepository, orderItemDTO.getProductId());
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setProduct(product);
@@ -60,7 +57,6 @@ public class OrderServiceImpl implements OrderService {
 
             double itemAmount = product.getPrice() * orderItemDTO.getQuantity();
             totalAmount += itemAmount;
-
             orderItems.add(orderItem);
         }
         order.setOrderItems(orderItems);
@@ -74,18 +70,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderDTO findById(Long id) throws OrderException {
-        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
+        Order existingOrder = EntityFinderUtils.findOrderById(orderRepository,id);
         return OrderDTO.convertOrderDTO(existingOrder);
     }
 
     public void deleteById(Long id) throws OrderException {
-        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
+        Order existingOrder = EntityFinderUtils.findOrderById(orderRepository,id);
         orderRepository.deleteById(existingOrder.getId());
     }
     //falta implementar corretamente
     @Transactional
     public OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws OrderException {
-        Order existingOrder = orderRepository.findById(id).orElseThrow(() -> new OrderException(id));
+        Order existingOrder = EntityFinderUtils.findOrderById(orderRepository,id);
         Order updatedOrder = orderRepository.save(existingOrder);
         return OrderDTO.convertOrderDTO(updatedOrder);
     }

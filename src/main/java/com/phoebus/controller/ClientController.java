@@ -1,6 +1,7 @@
 package com.phoebus.controller;
 
 import com.phoebus.model.entites.DTO.ClientDTO;
+import com.phoebus.model.exception.AddressException;
 import com.phoebus.model.exception.ClientException;
 import com.phoebus.service.ClientService;
 import io.micronaut.data.model.Page;
@@ -35,7 +36,7 @@ public class ClientController {
 
     @Post
     @Status(HttpStatus.CREATED)
-    public ClientDTO clientSaved(@Body ClientDTO client){
+    public ClientDTO clientSaved(@Body ClientDTO client) throws AddressException {
         return clientService.save(client);
     }
 
@@ -47,7 +48,7 @@ public class ClientController {
 
     @Put("/{id}")
     @Status(HttpStatus.OK)
-    public ClientDTO clientUpdate(@PathVariable Long id, @Body ClientDTO clientDTO) throws ClientException {
+    public ClientDTO clientUpdate(@PathVariable Long id, @Body ClientDTO clientDTO) throws ClientException, AddressException {
         return clientService.update(id, clientDTO);
     }
 

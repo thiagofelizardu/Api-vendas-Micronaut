@@ -4,8 +4,8 @@ import com.phoebus.model.entites.Client;
 import com.phoebus.model.entites.DTO.ClientDTO;
 import com.phoebus.model.entites.DTO.AddressDTO;
 import com.phoebus.model.entites.Address;
+import com.phoebus.model.exception.AddressException;
 import com.phoebus.model.exception.ClientException;
-import com.phoebus.model.utils.EntityFinderUtils;
 import com.phoebus.repository.ClientRepository;
 import com.phoebus.service.ClientService;
 import io.micronaut.core.annotation.NonNull;
@@ -15,6 +15,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+//para omitir a classe usar import static, usarei esse exemplo somente nessa classe
+import static com.phoebus.model.utils.EntityFinderUtils.findClientById;
 
 @Singleton
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class ClientServiceImpl implements ClientService {
         return clientesPage.map(ClientDTO::convertClientDTO);
     }
 
-    public ClientDTO save(ClientDTO client) {
+    public ClientDTO save(ClientDTO client) throws AddressException {
         Client cliente = new Client();
         cliente.setName(client.getName());
         cliente.setCpf(client.getCpf());
@@ -45,13 +47,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public ClientDTO findById(@NonNull Long id) throws ClientException {
-        Client existingClient = EntityFinderUtils.findClientById(clientRepository, id);
+        Client existingClient = findClientById(clientRepository, id);
         return ClientDTO.convertClientDTO(existingClient);
     }
 
     @Transactional
-    public ClientDTO update(@NonNull Long id, ClientDTO client) throws ClientException {
-        Client existingClient = EntityFinderUtils.findClientById(clientRepository, id);
+    public ClientDTO update(@NonNull Long id, ClientDTO client) throws ClientException, AddressException {
+        Client existingClient = findClientById(clientRepository, id);
         existingClient.setName(client.getName());
         existingClient.setCpf(client.getCpf());
         existingClient.setAge(client.getAge());
@@ -66,15 +68,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public void deleteById(Long id)throws ClientException {
-        EntityFinderUtils.findClientById(clientRepository, id);
+        findClientById(clientRepository, id);
         clientRepository.deleteById(id);
     }
 
-    public Address createAddress(AddressDTO addressDTO) {
-        Address address = new Address();
-        address.setStreet(addressDTO.getStreet());
-        address.setCity(addressDTO.getCity());
-        return address;
+    public Address createAddress(AddressDTO addressDTO) throws AddressException {
+        try{
+            Address address = new Address();
+            address.setStreet(addressDTO.getStreet());
+            address.setCity(addressDTO.getCity());
+            return address;
+        }catch (Exception e) {
+            throw new AddressException(e.getMessage());
+        }
     }
 
 }
