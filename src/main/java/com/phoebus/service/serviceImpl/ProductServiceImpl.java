@@ -3,6 +3,7 @@ package com.phoebus.service.serviceImpl;
 import com.phoebus.model.entites.DTO.ProductDTO;
 import com.phoebus.model.entites.Product;
 import com.phoebus.model.exception.ProductException;
+import com.phoebus.model.utils.EntityFinderUtils;
 import com.phoebus.repository.ProductRepository;
 import com.phoebus.service.ProdutoService;
 import io.micronaut.core.annotation.NonNull;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 @RequiredArgsConstructor
-public class ProdutoServiceImpl implements ProdutoService {
+public class ProductServiceImpl implements ProdutoService {
 
     @Inject
     private final ProductRepository productRepository;
@@ -45,27 +46,23 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 
     public ProductDTO findById(@NonNull Long id) throws ProductException {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new ProductException(id));
+        Product existingProduct = EntityFinderUtils.findProductById(productRepository, id);
         return ProductDTO.convertProductDTO(existingProduct);
     }
 
 
     public ProductDTO findByNome(String name) throws ProductException {
-        Product existingProduct = productRepository.findByName(name)
-                .orElseThrow(() -> new ProductException(name));
+        Product existingProduct = EntityFinderUtils.findProductByName(productRepository, name);
         return ProductDTO.convertProductDTO(existingProduct);
     }
 
     public void deleteById(Long id) throws ProductException {
-        productRepository.findById(id)
-                .orElseThrow(() -> new ProductException( id));
+        EntityFinderUtils.findProductById(productRepository, id);
         productRepository.deleteById(id);
     }
 
     public ProductDTO updateProduto(Long id, ProductDTO productDTO) throws ProductException {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new ProductException(id));
+        Product existingProduct = EntityFinderUtils.findProductById(productRepository, id);
         existingProduct.setName(productDTO.getName());
         existingProduct.setPrice(productDTO.getPrice());
         try {
