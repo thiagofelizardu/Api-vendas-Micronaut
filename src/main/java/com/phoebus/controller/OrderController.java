@@ -45,11 +45,11 @@ public class OrderController {
     public void pedidoDeleteById(@PathVariable Long id)throws OrderException {
         pedidoService.deleteById(id);
     }
-//
-//    @Put("/{id}")
-//    @Status(HttpStatus.OK)
-//    public OrderDTO pedidoUpdate(@PathVariable Long id, @Body OrderDTO pedido) throws PedidoException {
-//        return pedidoService.updatePedido(id,pedido);
-//    }
+
+    @Put("/{id}")
+    @Status(HttpStatus.OK)
+    public OrderDTO pedidoUpdate(@PathVariable Long id, @Body OrderDTO pedido) throws ClientException, OrderException, ProductException {
+        return pedidoService.updatePedido(id,pedido);
+    }
 
 }

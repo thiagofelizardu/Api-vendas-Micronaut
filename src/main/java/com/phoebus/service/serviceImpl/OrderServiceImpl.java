@@ -7,6 +7,7 @@ import com.phoebus.model.entites.OrderItem;
 import com.phoebus.model.entites.Order;
 import com.phoebus.model.entites.Product;
 import com.phoebus.model.exception.ClientException;
+import com.phoebus.model.exception.OrderClientNotExistException;
 import com.phoebus.model.exception.OrderException;
 import com.phoebus.model.exception.ProductException;
 import com.phoebus.model.utils.EntityFinderUtils;
@@ -78,11 +79,38 @@ public class OrderServiceImpl implements OrderService {
         Order existingOrder = EntityFinderUtils.findOrderById(orderRepository,id);
         orderRepository.deleteById(existingOrder.getId());
     }
-    //falta implementar corretamente
+
+    //ta bugado
     @Transactional
-    public OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws OrderException {
-        Order existingOrder = EntityFinderUtils.findOrderById(orderRepository,id);
+    public OrderDTO updatePedido(Long id, OrderDTO orderDTO) throws OrderException, ClientException, ProductException {
+        Order existingOrder = EntityFinderUtils.findOrderById(orderRepository, id);
+        Client clientFindId = EntityFinderUtils.findClientById(clientRepository, orderDTO.getClientId());
+
+        if (!existingOrder.getClient().getId().equals(clientFindId.getId())) {
+            throw new OrderException(clientFindId.getId());
+        }
+        existingOrder.getOrderItems().clear();
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
+        double totalAmount = 0.0;
+        for (OrderItemDTO orderItemDTO : orderDTO.getOrderItem()) {
+            Product product = EntityFinderUtils.findProductById(productRepository, orderItemDTO.getProductId());
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(existingOrder);
+            orderItem.setProduct(product);
+            orderItem.setQuantity(orderItemDTO.getQuantity());
+
+
+            double itemAmount = product.getPrice() * orderItemDTO.getQuantity();
+            totalAmount += itemAmount;
+
+            updatedOrderItems.add(orderItem);
+        }
+        existingOrder.setOrderItems(updatedOrderItems);
+        existingOrder.setAmount(totalAmount);
         Order updatedOrder = orderRepository.save(existingOrder);
+
+
         return OrderDTO.convertOrderDTO(updatedOrder);
     }
+
 }
