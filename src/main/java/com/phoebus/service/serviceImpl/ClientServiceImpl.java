@@ -16,6 +16,7 @@ import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 //para omitir a classe usar import static, usarei esse exemplo somente nessa classe
+import static com.phoebus.model.utils.EntityFinderUtils.findByIdGen;
 import static com.phoebus.model.utils.EntityFinderUtils.findClientById;
 
 @Singleton
@@ -47,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public ClientDTO findById(@NonNull Long id) throws ClientException {
-        Client existingClient = findClientById(clientRepository, id);
+        Client existingClient = findByIdGen(clientRepository, id, ClientException::new);
         return ClientDTO.convertClientDTO(existingClient);
     }
 

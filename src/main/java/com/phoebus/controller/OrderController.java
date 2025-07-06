@@ -39,7 +39,7 @@ public class OrderController {
     public OrderDTO pedidoFindById(@PathVariable Long id)throws OrderException {
         return pedidoService.findById(id);
     }
-
+    //BUGADO
     @Delete("/{id}")
     @Status(HttpStatus.NO_CONTENT)
     public void pedidoDeleteById(@PathVariable Long id)throws OrderException {
